@@ -1,26 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* ================================================================
+   FINWIZ DESIGN SYSTEM - Tailwind v4 Theme Configuration  
+   ================================================================ */
+
+@theme {
+  /* ========== FONTS ========== */
+  --font-family-outfit: 'Outfit', sans-serif;
+  --font-family-sans: 'Outfit', sans-serif;
+  
+  /* ========== BRAND COLORS ========== */
+  --color-brand-primary: #2F04B0;
+  --color-brand-secondary: #443376;
+  --color-brand-dark: #1E3A8A;
+  --color-brand-logo: #F76559;
+  --color-brand-credit: #FCBFBA;
+  --color-brand-dream: #FFD466;
+  --color-brand-card-badge: #0A4517;
+  --color-brand-spotify-green: #10B981;
+  --color-brand-netflix-black: #101010;
+  --color-brand-netflix-red: #E50913;
+  
+  /* ========== SURFACE COLORS ========== */
+  --color-surface-card: #FFFFFF;
+  --color-surface-card-alt: #F5F7FA;
+  --color-surface-base: #FCFCFD;
+  --color-surface-dark: #120048;
+  --color-surface-divider: #E3E6E9;
+  --color-surface-on-track: #EFFCF5;
+  
+  /* ========== TEXT COLORS ========== */
+  --color-text-primary: #120048;
+  --color-text-secondary: #4F4769;
+  --color-text-muted: #BDC2CA;
+  --color-text-inverse: #FFFFFF;
+  --color-text-warning: #AE1509;
+  
+  /* ========== STATUS COLORS ========== */
+  --color-status-success: #00A326;
+  --color-status-success-subtle: #F0FDF3;
+  --color-status-warning: #FFB800;
+  --color-status-error: #E50913;
+  --color-status-highlight: #594399;
+  
+  /* ========== DATA CATEGORY COLORS ========== */
+  --color-data-utilities: #5F81FF;
+  --color-data-friends-fam: #FCBFBA;
+  --color-data-savings: #C880E6;
+  --color-data-fees: #8FFFA9;
+  --color-data-charity: #DAABEE;
+  
+  /* ========== GRADIENT COLORS ========== */
+  --color-gradient-orange: #FFB602;
+  --color-gradient-red: #F2645D;
+  --color-gradient-purple: #7159B6;
+  --color-gradient-green: #00A326;
+  
+  /* ========== BUDGET CATEGORY COLORS ========== */
+  --color-budget-bills: #7167BF;
+  --color-budget-transport: #3008A3;
+  --color-budget-pet-care: #4CB665;
+  --color-budget-shopping: #8F6AFB;
+  --color-budget-subscribing: #A284FC;
+  
+  /* ========== BUTTON COLORS ========== */
+  --color-button-primary-text: #FFFFFF;
+  --color-button-secondary: #FFFFFF;
+  --color-button-secondary-text: #2F04B0;
+  --color-button-secondary-stroke: #2F04B0;
+  --color-button-header-action: #1E3A8A;
+  --color-button-header-action-stroke: #FFFFFF;
+  --color-button-filter-inactive: #F9AFAB;
+  
+  /* ========== PARTNER BRAND COLORS ========== */
+  --color-partner-amazon: #FF9900;
+  --color-partner-transfer-bg: #374151;
+  --color-partner-transfer-icon: #F472B6;
+  --color-partner-ikea-bg: #0D5BAB;
+  --color-partner-ikea-icon: #FBD914;
+  --color-partner-paramount-bg: #0066FF;
+  
+  /* ========== SPACING & SIZING ========== */
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
+  
+  /* ========== SHADOWS ========== */
+  --shadow-sm: 0 1px 2px rgba(10, 13, 18, 0.06), 0 1px 3px rgba(10, 13, 18, 0.1);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== CSS CUSTOM PROPERTIES FOR RUNTIME ACCESS ========== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-primary: #2F04B0;
+  --brand-secondary: #443376;
+  --brand-dark: #1E3A8A;
+  --surface-dark: #120048;
+  --surface-card: #FFFFFF;
+  --surface-base: #FCFCFD;
+  --text-primary: #120048;
+  --text-secondary: #4F4769;
+  --text-inverse: #FFFFFF;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ========== BASE STYLES ========== */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-outfit);
+  background-color: #FCFCFD;
+  color: var(--color-text-primary);
+  min-height: 100vh;
 }
+
+/* ========== GRADIENT UTILITIES ========== */
+.bg-gradient-purple-1 {
+  background: linear-gradient(135deg, #2F04B0 0%, #7159B6 100%);
+}
+
+.bg-gradient-red-2 {
+  background: linear-gradient(135deg, #E50913 0%, #F2645D 100%);
+}
+
+.bg-gradient-orange-3 {
+  background: linear-gradient(135deg, #FFB800 0%, #FFB602 100%);
+}
+
+.bg-gradient-green-4 {
+  background: linear-gradient(135deg, #00A326 0%, #4CB665 100%);
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(180deg, #1E3A8A 0%, #120048 100%);
+}
+
+/* ========== GLOW EFFECTS ========== */
+.glow-primary {
+  box-shadow: 0 0 20px rgba(47, 4, 176, 0.5);
+}
+
+.glow-active {
+  box-shadow: 0 0 12px rgba(47, 4, 176, 0.6), 0 0 24px rgba(113, 89, 182, 0.4);
+}
+
+/* ========== SCROLLBAR STYLING ========== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-brand-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gradient-purple);
+}
+
+/* ========== ANIMATION UTILITIES ========== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(47, 4, 176, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(47, 4, 176, 0.7);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-progress-fill {
+  animation: progressFill 1s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ========== STAGGERED ANIMATION DELAYS ========== */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }

@@ -3,16 +3,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+const navItems = [
+  { href: '/dashboard', label: 'Accounts', icon: AccountsIcon },
+  { href: '/accounts/current', label: 'Cards', icon: CardsIcon },
+  { href: '/insights', label: 'Insights', icon: InsightsIcon },
+  { href: '#', label: 'Invest', icon: InvestIcon },
+  { href: '#', label: 'Borrow', icon: BorrowIcon },
+];
+
 export default function Header() {
+
+
   const pathname = usePathname();
 
-  const navItems = [
-    { href: '/dashboard', label: 'Accounts', icon: AccountsIcon },
-    { href: '/accounts/current', label: 'Cards', icon: CardsIcon },
-    { href: '/insights', label: 'Insights', icon: InsightsIcon },
-    { href: '#', label: 'Invest', icon: InvestIcon },
-    { href: '#', label: 'Borrow', icon: BorrowIcon },
-  ];
+
 
   const isActive = (href: string) => {
     if (href === '/dashboard' || href === '/') {
@@ -42,7 +46,7 @@ export default function Header() {
               const active = isActive(item.href);
               return (
                 <Link
-                  key={item.href}
+                  key={item.label}
                   href={item.href}
                   className={`
                     flex flex-col items-center rounded-xl transition-all duration-200

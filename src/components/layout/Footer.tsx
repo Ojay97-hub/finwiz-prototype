@@ -1,131 +1,107 @@
 import Link from 'next/link';
+import { Shield, Trophy, Users } from 'lucide-react';
 
 export default function Footer() {
-    const currentYear = new Date().getFullYear();
+    const currentYear = 2025; // Hardcoded to match design "@ 2025" or dynamic
 
     return (
-        <footer className="bg-brand-primary text-white">
+        <footer className="bg-[#120048] text-white pt-16 pb-8">
             {/* Newsletter Section */}
-            <div className="bg-gradient-purple-1 py-10">
-                <div className="max-w-[1440px] mx-auto px-4 lg:px-8 text-center">
-                    <h2 className="text-2xl font-bold mb-2">Stay ahead of your financial game</h2>
-                    <p className="text-white/80 mb-6">Get exclusive insights, tips, and early access to new features!</p>
-                    <div className="flex justify-center gap-3 max-w-md mx-auto">
-                        <input
-                            type="email"
-                            placeholder="Sign Up to the Newsletter..."
-                            className="flex-1 px-4 py-2.5 rounded-lg bg-white text-text-primary placeholder-text-muted text-sm focus:outline-none focus:ring-2 focus:ring-white/50"
-                        />
-                        <button className="px-6 py-2.5 bg-white text-brand-primary font-medium rounded-lg hover:bg-white/90 transition-colors text-sm">
-                            Subscribe
-                        </button>
-                    </div>
+            <div className="max-w-[1440px] mx-auto px-4 lg:px-8 text-center mb-16">
+                <h2 className="text-3xl font-bold mb-3 text-[#FFD466]">Stay ahead of your financial game</h2>
+                <p className="text-white/80 mb-8 font-medium">Get exclusive insights, tips, and early access to new features!</p>
+                <div className="flex justify-center gap-3 max-w-lg mx-auto">
+                    <input
+                        type="email"
+                        placeholder="Sign Up to the Newsletter...."
+                        className="flex-1 px-6 py-3 rounded-[12px] bg-white text-[#120048] placeholder-text-muted text-sm focus:outline-none font-medium"
+                    />
+                    <button className="px-8 py-3 bg-[#EEF2FF] text-[#120048] font-bold rounded-[12px] hover:bg-white/90 transition-colors text-sm">
+                        Subscribe
+                    </button>
                 </div>
             </div>
 
-            {/* Main Footer */}
-            <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-12">
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            {/* Main Footer Content */}
+            <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
                     {/* Brand Column */}
-                    <div className="col-span-2 md:col-span-1">
-                        <Link href="/dashboard" className="flex items-center gap-2 mb-4">
-                            <div className="w-8 h-8 rounded-full bg-gradient-orange-3 flex items-center justify-center">
-                                <span className="text-sm">🧙</span>
-                            </div>
-                            <span className="text-lg font-bold">
-                                Fin<span className="text-brand-logo">Wiz</span>
-                            </span>
+                    <div className="md:col-span-5 lg:col-span-4">
+                        <Link href="/dashboard" className="block mb-6">
+                            {/* Estimated Outline Logo based on image */}
+                            <svg width="180" height="50" viewBox="0 0 180 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12.5 45V5H42.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M12.5 25H38.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M52.5 45V18M52.5 8V8.1" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M68.5 45V18L78.5 25L88.5 18V45" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M112.5 45H108.5L98.5 5H102.5L108.5 35L114.5 5H118.5L124.5 35L130.5 5H134.5L124.5 45H120.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M144.5 45V18M144.5 8V8.1" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M158.5 45H178.5L158.5 18H178.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                         </Link>
-                        <p className="text-white/60 text-sm leading-relaxed">
-                            Empowering your financial journey with AI-driven insights and seamless money management.
+                        <p className="text-white text-sm leading-relaxed max-w-sm">
+                            Empowering your financial journey with AI-driven Insights and seamless money management.
                         </p>
                     </div>
 
-                    {/* Product */}
-                    <div>
-                        <h3 className="font-semibold mb-4">Product</h3>
-                        <ul className="space-y-2 text-sm text-white/60">
-                            <li><Link href="#" className="hover:text-white transition-colors">Personal Finance</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Business Banking</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Investment Tools</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Credit Cards</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Loans</Link></li>
-                        </ul>
-                    </div>
+                    {/* Links Grid */}
+                    <div className="md:col-span-7 lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
+                        <div>
+                            <h3 className="font-bold text-lg mb-6">Product</h3>
+                            <ul className="space-y-4 text-sm font-medium">
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Personal Finance</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Business Banking</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Investment Tools</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Credit Cards</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Loans</Link></li>
+                            </ul>
+                        </div>
 
-                    {/* Company */}
-                    <div>
-                        <h3 className="font-semibold mb-4">Company</h3>
-                        <ul className="space-y-2 text-sm text-white/60">
-                            <li><Link href="#" className="hover:text-white transition-colors">About Us</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Careers</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Press</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Contact</Link></li>
-                        </ul>
-                    </div>
+                        <div>
+                            <h3 className="font-bold text-lg mb-6">Company</h3>
+                            <ul className="space-y-4 text-sm font-medium">
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">About Us</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Careers</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Press</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Blog</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Contact</Link></li>
+                            </ul>
+                        </div>
 
-                    {/* Support */}
-                    <div>
-                        <h3 className="font-semibold mb-4">Support</h3>
-                        <ul className="space-y-2 text-sm text-white/60">
-                            <li><Link href="#" className="hover:text-white transition-colors">Help Center</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Security</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">API Docs</Link></li>
-                        </ul>
+                        <div>
+                            <h3 className="font-bold text-lg mb-6">Support</h3>
+                            <ul className="space-y-4 text-sm font-medium">
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Help Center</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Security</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Privacy Policy</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">Terms of Service</Link></li>
+                                <li><Link href="#" className="hover:text-[#FFD466] transition-colors">API Docs</Link></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="border-t border-white/10 mt-10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-white/60 text-sm">
-                        © {currentYear} FinWiz. All Rights Reserved
+                <div className="border-t border-white pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <p className="text-white text-sm font-medium">
+                        @ {currentYear} FinWiz. All Rights Reserved
                     </p>
-                    <div className="flex gap-6 text-sm text-white/60">
+                    <div className="flex gap-8 text-sm font-medium">
                         <span className="flex items-center gap-2">
-                            <ShieldIcon className="w-4 h-4" />
+                            <Shield className="w-5 h-5 text-[#FFD466]" />
                             Bank-level security
                         </span>
                         <span className="flex items-center gap-2">
-                            <StarIcon className="w-4 h-4" />
+                            <Trophy className="w-5 h-5 text-[#FFD466]" />
                             Award-winning support
                         </span>
                         <span className="flex items-center gap-2">
-                            <UsersIcon className="w-4 h-4" />
-                            6M+ happy users
+                            <Users className="w-5 h-5 text-[#FFD466]" />
+                            5M+ happy users
                         </span>
                     </div>
                 </div>
             </div>
         </footer>
-    );
-}
-
-function ShieldIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-    );
-}
-
-function StarIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-        </svg>
-    );
-}
-
-function UsersIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <path d="M23 21v-2a4 4 0 00-3-3.87" />
-            <path d="M16 3.13a4 4 0 010 7.75" />
-        </svg>
     );
 }

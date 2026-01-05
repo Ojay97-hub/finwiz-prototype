@@ -1,171 +1,417 @@
 'use client';
 
 import { useState } from 'react';
-import { transactions, categories, incomeVsExpenses, balanceHistory } from '@/data/mockData';
+import {
+    transactions,
+    categories,
+    incomeVsExpenses,
+    balanceHistory,
+    currentAccountData,
+    savingsAccountData,
+    creditCardData
+} from '@/data/mockData';
 import LineChart from '@/components/charts/LineChart';
+import {
+    Search,
+    Download,
+    ChevronDown,
+    Plus,
+    FileText,
+    ArrowRightLeft,
+    Split,
+    Wallet,
+    Shield,
+    Star,
+    Calendar,
+    PiggyBank
+} from 'lucide-react';
+import TransactionIcon from '@/components/TransactionIcon';
 
 export default function CurrentAccountPage() {
     const [activeCategory, setActiveCategory] = useState('all');
-    const [activeTab, setActiveTab] = useState('current');
+    const [activeTab, setActiveTab] = useState('current-account');
     const [timeFilter, setTimeFilter] = useState('Yesterday');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [showTips, setShowTips] = useState(true);
+    const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
 
-    const currentBalance = 2260.00;
+    const timeOptions = ['Yesterday', 'Today', 'Last 7 days', 'Last 30 days', 'This month', 'Last month'];
 
-    const filteredTransactions = activeCategory === 'all'
-        ? transactions
-        : transactions.filter(t =>
-            t.category.toLowerCase().includes(activeCategory.replace('-', ' '))
-        );
+    // Color themes for each account type
+    const accountThemes: Record<string, {
+        bg: string;
+        blob1: string;
+        blob2: string;
+        title: string;
+        highlight: string;
+        tabBg: string;
+        tabText: string;
+        secondaryBtnBg: string;
+        secondaryBtnText: string;
+        borderColor: string;
+        primaryBtnBorder: string;
+        primaryBtnText: string;
+        primaryBtnHover: string;
+    }> = {
+        'current-account': {
+            bg: 'bg-[#2F04B0]',
+            blob1: 'bg-[#5C37EB]',
+            blob2: 'bg-[#443376]',
+            title: 'Current',
+            highlight: 'Magic',
+            tabBg: 'bg-[#2F04B0]',
+            tabText: 'text-[#2F04B0]',
+            secondaryBtnBg: 'bg-[#E1DEE9]',
+            secondaryBtnText: 'text-[#2F04B0]',
+            borderColor: '#2F04B0',
+            primaryBtnBorder: 'border-white',
+            primaryBtnText: 'text-white',
+            primaryBtnHover: 'hover:bg-white/10',
+        },
+        'savings': {
+            bg: 'bg-[#FFB602]',
+            blob1: 'bg-[#FFD766]',
+            blob2: 'bg-[#D99A00]',
+            title: 'Dream',
+            highlight: 'Vault',
+            tabBg: 'bg-[#D99A00]',
+            tabText: 'text-[#7A5600]',
+            secondaryBtnBg: 'bg-white',
+            secondaryBtnText: 'text-[#5A4200]',
+            borderColor: '#FFB602',
+            primaryBtnBorder: 'border-[#5A4200]',
+            primaryBtnText: 'text-[#5A4200]',
+            primaryBtnHover: 'hover:bg-[#5A4200]/10',
+        },
+        'credit-card': {
+            bg: 'bg-[#F5B5B5]',
+            blob1: 'bg-[#FFCFCF]',
+            blob2: 'bg-[#E899A0]',
+            title: 'Credit',
+            highlight: 'Sorcery',
+            tabBg: 'bg-[#C75050]',
+            tabText: 'text-[#8B2E2E]',
+            secondaryBtnBg: 'bg-white',
+            secondaryBtnText: 'text-[#6B1E1E]',
+            borderColor: '#F5B5B5',
+            primaryBtnBorder: 'border-[#6B1E1E]',
+            primaryBtnText: 'text-[#6B1E1E]',
+            primaryBtnHover: 'hover:bg-[#6B1E1E]/10',
+        },
+    };
 
-    const chartData = balanceHistory.map(item => ({
+    const currentTheme = accountThemes[activeTab] || accountThemes['current-account'];
+
+    // Get account-specific data based on active tab
+    const getAccountData = () => {
+        switch (activeTab) {
+            case 'savings':
+                return savingsAccountData;
+            case 'credit-card':
+                return creditCardData;
+            default:
+                return currentAccountData;
+        }
+    };
+
+    const accountData = getAccountData();
+    const currentBalance = Math.abs(accountData.balance);
+
+    // Use account-specific transactions
+    const accountTransactions = accountData.transactions;
+    const filteredTransactions = accountTransactions.filter(t => {
+        // 1. Text Search (Merchant or Category)
+        const matchesSearch = t.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            t.category.toLowerCase().includes(searchTerm.toLowerCase());
+
+        // 2. Category Filter
+        let matchesCategory = true;
+        if (activeCategory === 'income') {
+            matchesCategory = t.amount > 0;
+        } else if (activeCategory === 'expense') {
+            matchesCategory = t.amount < 0;
+        } else if (activeCategory !== 'all') {
+            matchesCategory = t.category.toLowerCase().includes(activeCategory.replace('-', ' '));
+        }
+
+        return matchesSearch && matchesCategory;
+    });
+
+    const chartData = accountData.balanceHistory.map(item => ({
         label: item.date,
         value: item.balance,
     }));
 
-    const summaryPills = [
-        { text: '7 days to pay day left', color: '#2F04B0' },
-        { text: 'Feed spend is 10% ↑ vs wk', color: '#FFB602' },
-        { text: 'Sex TotalExpn for February', color: '#F2645D' },
-        { text: 'Subscription cap on 28% of income', color: '#E50913' },
-    ];
+    const summaryPills = (() => {
+        switch (activeTab) {
+            case 'savings':
+                return [
+                    { text: 'Interest earned: £54.30 this month', color: '#00A326' },
+                    { text: 'Holiday fund 80% complete!', color: '#FFB602' },
+                    { text: 'Round-ups saved you £12.35', color: '#7159B6' },
+                    { text: 'Auto-save active: £200/month', color: '#2F04B0' },
+                ];
+            case 'credit-card':
+                return [
+                    { text: 'Cashback earned: £127.50 YTD', color: '#7159B6' },
+                    { text: 'Payment due in 10 days: £45', color: '#F2645D' },
+                    { text: 'Available credit: £3,152.68', color: '#00A326' },
+                    { text: '4,850 points ready to redeem', color: '#FFB602' },
+                ];
+            default:
+                return [
+                    { text: '7 duplicate incomes detected', color: '#2F04B0' },
+                    { text: 'Food spend up 18% this week', color: '#F2645D' },
+                    { text: 'Set fuel budget for February', color: '#FFB602' },
+                    { text: 'Subscriptions now 32% of expenses', color: '#E50913' },
+                ];
+        }
+    })();
 
     return (
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-6 lg:py-10">
-            {/* Main Content Grid */}
+            {/* Top Section */}
             <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6 mb-8">
-                {/* Left Column */}
+                {/* Left Column - Current Magic */}
                 <div>
                     {/* Current Magic Card */}
-                    <div className="bg-gradient-purple-1 rounded-3xl p-6 lg:p-8 text-white relative overflow-hidden mb-6">
-                        <div className="absolute -right-16 -top-16 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
-                        <div className="relative z-10">
-                            <div className="flex items-center justify-between mb-4">
-                                <span className="text-lg font-medium">Current <span className="text-brand-logo">Magic</span></span>
-                                <span className="text-sm bg-white/20 px-3 py-1 rounded-full">•••• 2456</span>
+                    <div className={`${currentTheme.bg} rounded-[24px] p-6 lg:p-8 text-white relative overflow-hidden h-[360px] flex flex-col justify-between shadow-xl transition-colors duration-300`}>
+                        {/* Background blobs/gradients */}
+                        <div className={`absolute top-0 right-0 w-[400px] h-[400px] ${currentTheme.blob1} rounded-full blur-[100px] opacity-50 -translate-y-1/2 translate-x-1/3 pointer-events-none`}></div>
+                        <div className={`absolute bottom-0 left-0 w-[300px] h-[300px] ${currentTheme.blob2} rounded-full blur-[80px] opacity-40 translate-y-1/3 -translate-x-1/3 pointer-events-none`}></div>
+
+                        <div className="relative z-10 flex flex-col h-full">
+                            {/* Top section - title and card number */}
+                            <div className="flex items-center justify-between mb-2">
+                                <span className={`text-xl font-medium tracking-wide ${activeTab === 'current-account' ? 'text-white' : 'text-gray-800'}`}>
+                                    {currentTheme.title} <span className={`font-semibold ${activeTab === 'current-account' ? 'text-brand-dream' : activeTab === 'savings' ? 'text-[#7A5600]' : 'text-[#8B2E2E]'}`}>{currentTheme.highlight}</span>
+                                </span>
+                                <span className={`text-sm px-4 py-1.5 rounded-full backdrop-blur-sm font-medium tracking-wider ${activeTab === 'current-account' ? 'bg-white/10 text-white' : 'bg-black/10 text-gray-800'}`}>**** {accountData.cardNumber}</span>
                             </div>
 
-                            <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-                                £{currentBalance.toLocaleString('en-GB', { minimumFractionDigits: 2 })}
-                            </h1>
+                            {/* Center section - balance */}
+                            <div className="flex-1 flex items-center">
+                                <h1 className={`text-5xl lg:text-6xl font-bold ${activeTab === 'current-account' ? 'text-white' : 'text-gray-800'}`}>
+                                    £{currentBalance.toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                                </h1>
+                            </div>
 
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                <button className="flex items-center gap-2 bg-status-success text-white px-4 py-2 rounded-xl text-sm font-medium">
-                                    <PlusIcon className="w-4 h-4" /> Add Money
+                            {/* Bottom section - buttons (close to tabs) */}
+                            <div className="flex flex-wrap gap-4 mb-3">
+                                <button className="flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <Plus className="w-4 h-4" /> Add Money
                                 </button>
-                                <button className="flex items-center gap-2 bg-brand-primary border border-white/30 text-white px-4 py-2 rounded-xl text-sm font-medium">
-                                    <SaveIcon className="w-4 h-4" /> Save Money
+                                <button className="flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <FileText className="w-4 h-4" /> Send Money
                                 </button>
-                                <button className="flex items-center gap-2 bg-white/10 border border-white/30 text-white px-4 py-2 rounded-xl text-sm font-medium">
-                                    <TransferIcon className="w-4 h-4" /> Transfer
+                                <button className="flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <ArrowRightLeft className="w-4 h-4" /> Transfer
                                 </button>
-                                <button className="flex items-center gap-2 bg-white/10 border border-white/30 text-white px-4 py-2 rounded-xl text-sm font-medium">
-                                    <SplitIcon className="w-4 h-4" /> Split
+                                <button className="flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <Split className="w-4 h-4" /> Split
                                 </button>
                             </div>
 
-                            {/* Account Tabs */}
-                            <div className="flex gap-2">
-                                {['Current account', 'Savings', 'Credit Card'].map((tab, i) => (
+                            {/* Account Tabs - Segmented Control style */}
+                            <div className="bg-white rounded-full p-1 inline-flex max-w-fit shadow-lg">
+                                {[
+                                    { label: 'Current account', key: 'current-account' },
+                                    { label: 'Savings', key: 'savings' },
+                                    { label: 'Credit Card', key: 'credit-card' },
+                                ].map((tab) => (
                                     <button
-                                        key={i}
-                                        onClick={() => setActiveTab(tab.toLowerCase().replace(' ', '-'))}
-                                        className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${i === 0 ? 'bg-brand-primary text-white' : 'bg-white/10 text-white/80 hover:bg-white/20'
+                                        key={tab.key}
+                                        onClick={() => setActiveTab(tab.key)}
+                                        className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === tab.key
+                                            ? `${currentTheme.tabBg} text-white shadow-sm`
+                                            : `${currentTheme.tabText} hover:bg-gray-50`
                                             }`}
                                     >
-                                        {tab}
+                                        {tab.label}
                                     </button>
                                 ))}
                             </div>
                         </div>
                     </div>
+                </div>
 
+                {/* Right Column - Insights & Tips */}
+                <div className="flex flex-col gap-6 h-[360px]">
+                    {/* FinWiz AI Insights Toggle */}
+                    <div className="flex items-center justify-between bg-white rounded-xl p-4 border border-surface-divider shrink-0">
+                        <span className="font-medium text-text-primary">FinWiz All Insights</span>
+                        <label
+                            className="flex items-center gap-2 cursor-pointer"
+                            onClick={() => setShowTips(!showTips)}
+                        >
+                            <span className="text-sm text-text-secondary">hide</span>
+                            <div className={`w-12 h-6 rounded-full relative transition-colors ${showTips ? 'bg-brand-primary' : 'bg-gray-300'}`}>
+                                <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${showTips ? 'right-1' : 'left-1'}`} />
+                            </div>
+                            <span className="text-sm text-text-secondary">Filter tip</span>
+                        </label>
+                    </div>
+
+                    {/* Tips */}
+                    {showTips ? (
+                        <div className="bg-surface-card-alt rounded-xl p-6 text-sm text-text-secondary space-y-4 flex-1 flex flex-col justify-center">
+                            {accountData.aiTips.map((tip, index) => (
+                                <p key={index}>• <strong>"{tip.title}"</strong> = {tip.description}</p>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="bg-surface-card-alt rounded-xl p-6 text-sm text-text-secondary flex-1 flex items-center justify-center">
+                            <p className="text-center">Tips are hidden. Toggle above to show.</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Bottom Section - Recent Spells & Magic Ledger */}
+            <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6">
+                {/* Left Column - Recent Spells */}
+                <div>
                     {/* Recent Spells Section */}
-                    <div className="bg-white rounded-2xl p-5 shadow-sm border border-surface-divider">
-                        <h2 className="text-lg font-semibold text-text-primary mb-4">Recent Spells</h2>
+                    <div
+                        className="bg-[#FCFCFD] rounded-[20px] py-6 shadow-sm relative overflow-hidden transition-colors duration-300"
+                        style={{ border: `0.5px solid ${currentTheme.borderColor}` }}
+                    >
+                        <div
+                            className="absolute top-0 left-0 right-0 h-[3px] z-20 transition-colors duration-300"
+                            style={{ backgroundColor: currentTheme.borderColor }}
+                        ></div>
+                        {/* Purple accent border top/left is handled by border-brand-primary/10 but Figma shows specific 3px solid on top/left? 
+                            Actually Figma CSS says: border-[3px_0.5px_0px] border-[var(--buttons\/primary,#2f04b0)]
+                            Let's use a refined style.
+                         */}
 
-                        {/* Filters */}
-                        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                            <div className="flex items-center gap-2">
-                                <span className="text-sm text-text-secondary">Filter by Category</span>
-                                <div className="flex gap-2">
-                                    {[
-                                        { id: 'income', name: 'income', color: '#00A326' },
-                                        { id: 'all', name: 'all categories', color: '#2F04B0' },
-                                        { id: 'daily', name: 'daily groceries', color: '#7159B6' },
-                                        { id: 'expenses', name: 'expenses', color: '#E50913' },
-                                    ].map((cat) => (
-                                        <button
-                                            key={cat.id}
-                                            onClick={() => setActiveCategory(cat.id)}
-                                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${activeCategory === cat.id
-                                                    ? 'text-white'
-                                                    : 'bg-surface-base text-text-secondary hover:bg-surface-card-alt'
-                                                }`}
-                                            style={activeCategory === cat.id ? { backgroundColor: cat.color } : undefined}
-                                        >
-                                            {cat.name}
-                                        </button>
-                                    ))}
+
+                        <div className="flex items-center justify-between mb-8 relative z-10 px-6">
+                            <div className="flex flex-col gap-4">
+                                <h2 className="text-base font-semibold text-text-primary">Filter by Category</h2>
+                                <div className="flex flex-wrap gap-2">
+                                    <button
+                                        onClick={() => setActiveCategory('all')}
+                                        className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeCategory === 'all'
+                                            ? activeTab === 'current-account' ? 'text-white' : 'text-gray-900'
+                                            : 'bg-white text-gray-900 border-2 border-gray-300 hover:border-gray-400'
+                                            }`}
+                                        style={activeCategory === 'all'
+                                            ? { backgroundColor: currentTheme.borderColor }
+                                            : {}}
+                                    >
+                                        all categories
+                                    </button>
+                                    <button
+                                        onClick={() => setActiveCategory('income')}
+                                        className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeCategory === 'income'
+                                            ? activeTab === 'current-account' ? 'text-white' : 'text-gray-900'
+                                            : 'bg-white text-gray-900 border-2 border-gray-300 hover:border-gray-400'
+                                            }`}
+                                        style={activeCategory === 'income'
+                                            ? { backgroundColor: currentTheme.borderColor }
+                                            : {}}
+                                    >
+                                        income
+                                    </button>
+                                    <button
+                                        onClick={() => setActiveCategory('expense')}
+                                        className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeCategory === 'expense'
+                                            ? activeTab === 'current-account' ? 'text-white' : 'text-gray-900'
+                                            : 'bg-white text-gray-900 border-2 border-gray-300 hover:border-gray-400'
+                                            }`}
+                                        style={activeCategory === 'expense'
+                                            ? { backgroundColor: currentTheme.borderColor }
+                                            : {}}
+                                    >
+                                        expense
+                                    </button>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <span className="text-sm text-text-secondary">Time Period</span>
-                                <select
-                                    value={timeFilter}
-                                    onChange={(e) => setTimeFilter(e.target.value)}
-                                    className="px-3 py-1.5 rounded-lg border border-surface-divider text-sm"
-                                >
-                                    <option>Yesterday</option>
-                                    <option>Last 7 days</option>
-                                    <option>Last 30 days</option>
-                                </select>
+                            <div className="flex flex-col items-end gap-4">
+                                <h2 className="text-base font-semibold text-text-primary">Time Period</h2>
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
+                                        className="flex items-center gap-2 px-5 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 hover:border-gray-400 transition-colors bg-white cursor-pointer focus:outline-none focus:border-gray-500"
+                                    >
+                                        {timeFilter}
+                                        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${isTimeDropdownOpen ? 'rotate-180' : ''}`} />
+                                    </button>
+                                    {isTimeDropdownOpen && (
+                                        <>
+                                            <div
+                                                className="fixed inset-0 z-40"
+                                                onClick={() => setIsTimeDropdownOpen(false)}
+                                            />
+                                            <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 min-w-[160px] z-50 overflow-hidden">
+                                                {timeOptions.map((option) => (
+                                                    <button
+                                                        key={option}
+                                                        onClick={() => {
+                                                            setTimeFilter(option);
+                                                            setIsTimeDropdownOpen(false);
+                                                        }}
+                                                        className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors ${timeFilter === option
+                                                            ? 'bg-gray-100 text-gray-900'
+                                                            : 'text-gray-700 hover:bg-gray-50'
+                                                            }`}
+                                                    >
+                                                        {option}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
-                        {/* Search */}
-                        <div className="flex gap-3 mb-4">
-                            <div className="flex-1 relative">
-                                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                        <div className="h-px w-auto mx-6 bg-brand-primary/20 mb-6"></div>
+
+                        {/* Search and Action */}
+                        <div className="flex items-center justify-between gap-4 mb-8 relative z-10 px-6">
+                            <div className="flex-1 relative max-w-md">
+                                <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                                 <input
                                     type="text"
                                     placeholder="search for a specific transaction..."
-                                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-divider text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/20"
+                                    className="w-full bg-white border border-gray-300 rounded-full py-3 pl-6 pr-12 text-sm text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-gray-500 transition-colors hover:border-gray-400"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-surface-divider text-sm text-text-secondary hover:bg-surface-base">
-                                <DownloadIcon className="w-4 h-4" /> Download State...
+                            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:border-gray-400 transition-colors">
+                                Download Statement <Download className="w-4 h-4" />
                             </button>
                         </div>
 
                         {/* Transactions Table */}
-                        <div className="overflow-x-auto">
+                        <div className="relative z-10">
                             <table className="w-full">
                                 <thead>
-                                    <tr className="text-left text-xs text-text-muted border-b border-surface-divider">
-                                        <th className="pb-3 font-medium">Yesterday</th>
-                                        <th className="pb-3 font-medium">type</th>
-                                        <th className="pb-3 font-medium">time</th>
-                                        <th className="pb-3 font-medium text-right">amount</th>
+                                    <tr className="text-left text-sm text-text-primary">
+                                        <th className="pb-6 px-6 font-semibold w-[35%]">Yesterday</th>
+                                        <th className="pb-6 px-6 font-semibold w-[25%]">Type</th>
+                                        <th className="pb-6 px-6 font-semibold w-[20%]">Time</th>
+                                        <th className="pb-6 px-6 font-semibold text-right w-[20%]">+ £18,550.00</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {filteredTransactions.slice(0, 7).map((t, index) => (
-                                        <tr key={t.id} className="border-b border-surface-divider/50 last:border-0">
-                                            <td className="py-3">
+                                <tbody className="space-y-4">
+                                    {filteredTransactions.slice(0, 10).map((t, index) => (
+                                        <tr key={t.id} className="group hover:bg-surface-base/50 transition-colors">
+                                            <td className="py-4 px-6 align-middle">
                                                 <div className="flex items-center gap-3">
-                                                    <div
-                                                        className="w-8 h-8 rounded-lg flex items-center justify-center text-sm"
-                                                        style={{ backgroundColor: t.iconBg }}
-                                                    >
-                                                        {t.icon}
-                                                    </div>
-                                                    <span className="font-medium text-text-primary">{t.merchant}</span>
+                                                    <TransactionIcon transaction={t} className="w-10 h-10 shrink-0" />
+                                                    <span className="font-semibold text-text-primary text-base">{t.merchant}</span>
                                                 </div>
                                             </td>
-                                            <td className="py-3 text-sm text-text-secondary">{t.category.toLowerCase()}</td>
-                                            <td className="py-3 text-sm text-text-secondary">{t.time}</td>
-                                            <td className={`py-3 text-right font-semibold ${t.amount >= 0 ? 'text-status-success' : 'text-text-primary'}`}>
-                                                {t.amount >= 0 ? '+' : ''}£{Math.abs(t.amount).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                                            <td className="py-4 px-6 text-sm text-text-primary font-medium align-middle">{t.category}</td>
+                                            <td className="py-4 px-6 text-sm text-text-primary font-medium align-middle">00:15am</td>
+                                            <td className="py-4 px-6 align-middle text-right">
+                                                <span className={`font-semibold text-base ${t.amount >= 0 ? 'text-status-success' : 'text-text-primary'}`}>
+                                                    {t.amount >= 0 ? '+' : ''} £{Math.abs(t.amount).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                                                </span>
                                             </td>
                                         </tr>
                                     ))}
@@ -176,160 +422,171 @@ export default function CurrentAccountPage() {
                 </div>
 
                 {/* Right Column - Magic Ledger */}
-                <div className="space-y-6">
-                    {/* FinWiz AI Insights Toggle */}
-                    <div className="flex items-center justify-between bg-white rounded-xl p-4 border border-surface-divider">
-                        <span className="font-medium text-text-primary">FinWiz All Insights</span>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <span className="text-sm text-text-secondary">hide</span>
-                            <div className="w-12 h-6 bg-brand-primary rounded-full relative">
-                                <span className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
-                            </div>
-                            <span className="text-sm text-text-secondary">Filter tip</span>
-                        </label>
-                    </div>
-
-                    {/* Tips */}
-                    <div className="bg-surface-card-alt rounded-xl p-4 text-sm text-text-secondary space-y-2">
-                        <p>• <strong>"Bundle & Save"</strong> = Combine smaller subscriptions into a unified plan; you'll spend less overall with more control of monthly cash flow.</p>
-                        <p>• <strong>"Round-Up Magic"</strong> = Turn spare change into savings invisibly: each purchase is the nearest £; could build a £200+ buffer each year.</p>
-                        <p>• <strong>"Debt buffer"</strong> = Pay down the highest-interest credit first; you'll free up money faster and avoid unnecessary interest.</p>
-                    </div>
-
+                <div className="flex flex-col justify-between">
                     {/* Your Magic Ledger */}
-                    <div className="bg-white rounded-2xl p-5 border border-surface-divider">
-                        <h3 className="font-semibold text-text-primary mb-4">Your Magic Ledger</h3>
+                    <div
+                        className="bg-[#FCFCFD] rounded-[20px] p-6 relative overflow-hidden transition-colors duration-300"
+                        style={{ border: `0.5px solid ${currentTheme.borderColor}` }}
+                    >
+                        <div
+                            className="absolute top-0 left-0 right-0 h-[3px] z-20 transition-colors duration-300"
+                            style={{ backgroundColor: currentTheme.borderColor }}
+                        ></div>
 
-                        <div className="mb-4">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm text-text-secondary">remaining balance</span>
-                                <span className="text-xs text-status-success">+9.01% vs last month</span>
+                        <div className="flex flex-col">
+                            <div className="mb-1">
+                                <h3 className="font-semibold text-lg text-gray-700">Remaining Balance</h3>
                             </div>
-                            <p className="text-3xl font-bold text-text-primary mb-4">£2,260.00</p>
 
-                            {/* Mini Chart */}
-                            <div className="h-24 bg-surface-base rounded-lg overflow-hidden">
-                                <LineChart data={chartData} height={96} color="#2F04B0" showArea={true} />
+                            <div className="relative mb-12">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-4xl font-bold text-text-primary">£{currentBalance.toLocaleString('en-GB', { minimumFractionDigits: 2 })}</p>
+                                </div>
+                                <p className={`text-sm font-medium mb-6 ${accountData.balanceChange >= 0 ? 'text-status-success' : 'text-status-error'}`}>{accountData.balanceChange >= 0 ? '+' : ''}{accountData.balanceChange}% vs last month</p>
+
+                                {/* Chart Area */}
+                                <div className="h-32 w-full relative">
+                                    <LineChart data={chartData} height={128} color="#6B7280" showArea={false} />
+                                    {/* Custom labels mimicking Figma could be added here if chart supports it, otherwise rely on LineChart */}
+                                </div>
+                                <div className="flex justify-between text-xs text-gray-500 font-medium mt-2">
+                                    <span>Jun 1</span>
+                                    <span>Jun 30</span>
+                                </div>
+                            </div>
+
+                            <div className="h-px w-full bg-gray-300 mb-8"></div>
+
+                            {/* Grid Cards */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Primary stat card - context-aware */}
+                                <div className="border border-gray-200 rounded-[20px] p-5 flex flex-col justify-between min-h-[140px] md:col-span-2 shadow-sm bg-white">
+                                    <PiggyBank className="w-8 h-8 text-gray-600 mb-4" />
+                                    <div>
+                                        <p className="text-2xl font-bold text-gray-900">
+                                            {activeTab === 'credit-card'
+                                                ? `£${(creditCardData.availableCredit).toLocaleString('en-GB', { minimumFractionDigits: 2 })}`
+                                                : activeTab === 'savings'
+                                                    ? `£${accountData.totalIncome.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`
+                                                    : `£${currentAccountData.freeToSpend.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`
+                                            }
+                                        </p>
+                                        <p className="text-base text-gray-600">
+                                            {activeTab === 'credit-card' ? 'Available Credit' : activeTab === 'savings' ? 'Total Deposits' : 'Free to spend'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Bank Transfers / Deposits */}
+                                <div className="border border-gray-200 rounded-[20px] p-5 flex flex-col justify-between min-h-[130px] shadow-sm bg-white">
+                                    <PiggyBank className="w-6 h-6 text-gray-600 mb-3" />
+                                    <div>
+                                        <p className="text-xl font-bold text-gray-900">{accountData.bankTransfers}</p>
+                                        <p className="text-sm text-gray-600">
+                                            {activeTab === 'credit-card' ? 'Transactions' : activeTab === 'savings' ? 'Deposits' : 'Bank Transfers'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Reserved / Interest */}
+                                <div className="border border-gray-200 rounded-[20px] p-5 flex flex-col justify-between min-h-[130px] shadow-sm bg-white">
+                                    <Shield className="w-6 h-6 text-gray-600 mb-3" />
+                                    <div>
+                                        <p className="text-xl font-bold text-gray-900">
+                                            {activeTab === 'credit-card'
+                                                ? `£${creditCardData.cashbackEarned.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`
+                                                : `£${accountData.reserved.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`
+                                            }
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            {activeTab === 'credit-card' ? 'Cashback Earned' : activeTab === 'savings' ? 'Goal Reserved' : 'Reserved'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Top Category */}
+                                <div className="border border-gray-200 rounded-[20px] p-5 flex flex-col justify-between min-h-[130px] shadow-sm bg-white">
+                                    <Star className="w-6 h-6 text-gray-600 mb-3" />
+                                    <div>
+                                        <p className="text-base font-bold text-gray-900 mb-1">{accountData.topCategoryPercent}% - {accountData.topCategory}</p>
+                                        <p className="text-sm text-gray-600">
+                                            {activeTab === 'credit-card' ? 'Top Spend Category' : activeTab === 'savings' ? 'Top Growth Source' : 'Top Spending category'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Upcoming / Due */}
+                                <div className="border border-gray-200 rounded-[20px] p-5 flex flex-col justify-between min-h-[130px] shadow-sm bg-white">
+                                    <Calendar className="w-6 h-6 text-gray-600 mb-3" />
+                                    <div>
+                                        <p className="text-base font-bold text-gray-900 mb-1">
+                                            {activeTab === 'credit-card'
+                                                ? `£${creditCardData.minimumPayment} min payment`
+                                                : `£${accountData.upcomingBill.amount.toLocaleString('en-GB', { minimumFractionDigits: 0 })} ${accountData.upcomingBill.name}`
+                                            }
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            {activeTab === 'credit-card' ? `Due ${creditCardData.dueDate}` : `Due ${accountData.upcomingBill.dueIn}`}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Quick Stats */}
-                        <div className="grid grid-cols-2 gap-3 mb-4">
-                            <div className="bg-surface-base rounded-xl p-3">
-                                <p className="text-xs text-text-muted mb-1">£1250.00</p>
-                                <p className="text-sm font-medium text-text-primary">Free credits</p>
-                            </div>
-                            <div className="bg-surface-base rounded-xl p-3">
-                                <p className="text-xs text-text-muted mb-1">£500</p>
-                                <p className="text-sm font-medium text-text-primary">SA</p>
-                                <p className="text-xs text-text-muted">Bulk Transfer</p>
-                            </div>
-                            <div className="bg-surface-base rounded-xl p-3">
-                                <p className="text-xs text-text-muted mb-1">☆</p>
-                                <p className="text-sm font-medium text-text-primary">30% Cashback</p>
-                                <p className="text-xs text-text-muted">for Spending categories</p>
-                            </div>
-                            <div className="bg-surface-base rounded-xl p-3 bg-gradient-to-br from-status-warning/20 to-transparent">
-                                <p className="text-xs text-text-muted mb-1">★</p>
-                                <p className="text-sm font-medium text-status-warning">#60 Deal</p>
-                                <p className="text-xs text-text-muted">of all time rank+1</p>
-                            </div>
+                    {/* Bottom Stats - outside ledger container */}
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div className="bg-white rounded-[20px] p-6 lg:p-8 border-[0.5px] border-status-success relative overflow-hidden min-h-[130px]">
+                            <div className="absolute top-0 left-0 right-0 h-[3px] bg-status-success z-20"></div>
+                            <h4 className="text-base text-text-secondary mb-2">
+                                {activeTab === 'credit-card' ? 'Payments Made' : 'Total Income'}
+                            </h4>
+                            <p className="text-lg lg:text-xl font-bold text-text-primary mb-2">
+                                +£{(activeTab === 'credit-card' ? creditCardData.paymentsMade : accountData.totalIncome).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                            </p>
+                            <span className="text-base font-medium text-status-success">
+                                +{activeTab === 'credit-card' ? creditCardData.paymentChange : accountData.incomeChange}% vs last month
+                            </span>
                         </div>
-
-                        {/* Income/Expenses */}
-                        <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-status-success/10 rounded-xl p-4 border border-status-success/30">
-                                <p className="text-xs text-text-secondary mb-1">Total Income</p>
-                                <p className="text-xl font-bold text-status-success">+£12,500.00</p>
-                                <p className="text-xs text-status-success">+5% vs last month</p>
-                            </div>
-                            <div className="bg-status-error/10 rounded-xl p-4 border border-status-error/30">
-                                <p className="text-xs text-text-secondary mb-1">Total Expenses</p>
-                                <p className="text-xl font-bold text-status-error">-£4,740.00</p>
-                                <p className="text-xs text-status-success">-5% vs last month</p>
-                            </div>
+                        <div className="bg-white rounded-[20px] p-6 lg:p-8 border-[0.5px] border-status-error relative overflow-hidden min-h-[130px]">
+                            <div className="absolute top-0 left-0 right-0 h-[3px] bg-status-error z-20"></div>
+                            <h4 className="text-base text-text-secondary mb-2">
+                                {activeTab === 'credit-card' ? 'Total Spend' : 'Total Expenses'}
+                            </h4>
+                            <p className="text-lg lg:text-xl font-bold text-text-primary mb-2">
+                                -£{(activeTab === 'credit-card' ? creditCardData.totalSpend : accountData.totalExpenses).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                            </p>
+                            <span className={`text-base font-medium ${accountData.expenseChange <= 0 ? 'text-status-success' : 'text-status-error'}`}>
+                                {activeTab === 'credit-card'
+                                    ? `+${creditCardData.spendChange}% vs last month`
+                                    : `${accountData.expenseChange}% vs last month`
+                                }
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* FinWiz Transactions Summary */}
-            <section className="mb-8 relative">
+            <section className="mb-0 mt-[46px]">
                 <h2 className="text-lg font-semibold text-text-primary mb-4">FinWiz Transactions Summary</h2>
-                <div className="flex gap-3 overflow-x-auto pb-2">
-                    {summaryPills.map((pill, i) => (
-                        <div
-                            key={i}
-                            className="px-6 py-3 rounded-full text-white text-sm font-medium whitespace-nowrap shadow-md"
-                            style={{ backgroundColor: pill.color }}
-                        >
-                            {pill.text}
-                        </div>
-                    ))}
-                </div>
-                {/* Floating wizard icon */}
-                <div className="absolute right-0 bottom-0 w-12 h-12 bg-gradient-orange-3 rounded-full flex items-center justify-center shadow-lg transform translate-y-1/2">
-                    <span className="text-2xl">🧙</span>
+                <div className="relative">
+                    <div className="w-full bg-gradient-to-r from-[#7159B6] via-[#F2645D] to-[#FFB602] rounded-[20px] px-8 py-4 flex gap-6 overflow-x-auto items-stretch min-h-[80px] justify-center no-scrollbar">
+                        {summaryPills.map((pill, i) => (
+                            <div key={i} className="bg-white px-6 py-4 rounded-[12px] text-[#120048] text-sm font-semibold whitespace-nowrap shadow-sm w-[274px] min-w-[274px] shrink-0 flex items-center justify-center">
+                                {pill.text}
+                            </div>
+                        ))}
+                    </div>
+                    {/* Floating wizard icon */}
+                    <div className="absolute -right-2 -top-5 w-12 h-12 bg-[#FFB602] rounded-full flex items-center justify-center shadow-lg z-20 ring-4 ring-white">
+                        <span className="text-2xl">🧙</span>
+                    </div>
                 </div>
             </section>
         </div>
     );
 }
 
-// Icon Components
-function PlusIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-    );
-}
+// Icon Components (Deleted internal icons in favor of Lucide)
 
-function SaveIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
-        </svg>
-    );
-}
-
-function TransferIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="17,1 21,5 17,9" />
-            <path d="M3 11V9a4 4 0 014-4h14" />
-            <polyline points="7,23 3,19 7,15" />
-            <path d="M21 13v2a4 4 0 01-4 4H3" />
-        </svg>
-    );
-}
-
-function SplitIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-        </svg>
-    );
-}
-
-function SearchIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-    );
-}
-
-function DownloadIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-            <polyline points="7,10 12,15 17,10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-        </svg>
-    );
-}

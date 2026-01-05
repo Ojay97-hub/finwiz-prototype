@@ -49,12 +49,12 @@ export default function LineChart({
                             dataKey="label"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#BDC2CA', fontSize: 12 }}
+                            tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 500 }}
                         />
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#BDC2CA', fontSize: 12 }}
+                            tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 500 }}
                             tickFormatter={(value) => `£${(value / 1000).toFixed(0)}k`}
                         />
                         <Tooltip
@@ -86,12 +86,12 @@ export default function LineChart({
                             dataKey="label"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#BDC2CA', fontSize: 12 }}
+                            tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 500 }}
                         />
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#BDC2CA', fontSize: 12 }}
+                            tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 500 }}
                             tickFormatter={(value) => `£${(value / 1000).toFixed(0)}k`}
                         />
                         <Tooltip

@@ -345,3 +345,170 @@ export const connectedAccounts = [
     { id: '2', bank: 'Barclays', lastFour: '1234', balance: 5670.00, icon: '🏦' },
     { id: '3', bank: 'Halifax', lastFour: '9876', balance: 12340.00, icon: '💰' },
 ];
+
+// ========== ACHIEVEMENTS ==========
+export interface Achievement {
+    id: string;
+    title: string;
+    description: string;
+    reward: string;
+    difficulty: 'Easy' | 'Medium' | 'Hard';
+    progress: number; // 0-100
+    completedDate?: string;
+    category: 'debt' | 'savings' | 'budgeting' | 'goals';
+    icon: string;
+}
+
+export const achievements: Achievement[] = [
+    {
+        id: '1',
+        title: '£500 Debt Destroyer',
+        description: 'Pay down £500 of high-interest debt',
+        reward: 'APR tips Unlocked',
+        difficulty: 'Easy',
+        progress: 100,
+        completedDate: 'Completed 5 days ago',
+        category: 'debt',
+        icon: '🏆',
+    },
+    {
+        id: '2',
+        title: '5 Goals Completed',
+        description: 'Complete your first 5 financial goals',
+        reward: '£10 bonus',
+        difficulty: 'Easy',
+        progress: 100,
+        completedDate: 'Completed 2 days ago',
+        category: 'goals',
+        icon: '🏆',
+    },
+    {
+        id: '3',
+        title: 'Subscription Slayer',
+        description: 'Cancel or downgrade 2 unused subscriptions',
+        reward: 'Habit streak +5',
+        difficulty: 'Medium',
+        progress: 40,
+        category: 'budgeting',
+        icon: '🏆',
+    },
+    {
+        id: '4',
+        title: 'Budget Boss',
+        description: 'Set a monthly budget and stay under it',
+        reward: 'Badge + streak boost',
+        difficulty: 'Hard',
+        progress: 60,
+        category: 'budgeting',
+        icon: '🏆',
+    },
+    {
+        id: '5',
+        title: 'Emergency Fund Starter',
+        description: 'Save £1000 in your emergency fund',
+        reward: 'Security badge',
+        difficulty: 'Medium',
+        progress: 75,
+        category: 'savings',
+        icon: '🏆',
+    },
+    {
+        id: '6',
+        title: 'Round-Up Champion',
+        description: 'Save £100 using round-ups',
+        reward: 'Bonus interest',
+        difficulty: 'Easy',
+        progress: 100,
+        completedDate: 'Completed 1 week ago',
+        category: 'savings',
+        icon: '🏆',
+    },
+    {
+        id: '7',
+        title: 'No Spend Week',
+        description: 'Complete a full week without discretionary spending',
+        reward: 'Willpower badge',
+        difficulty: 'Hard',
+        progress: 20,
+        category: 'budgeting',
+        icon: '🏆',
+    },
+    {
+        id: '8',
+        title: 'Savings Streak',
+        description: 'Save money for 30 consecutive days',
+        reward: 'Streak master badge',
+        difficulty: 'Medium',
+        progress: 85,
+        category: 'savings',
+        icon: '🏆',
+    },
+];
+
+// ========== MONEY CASTS (RECEIVED TRANSACTIONS) ==========
+export interface MoneyCast {
+    id: string;
+    name: string;
+    description: string;
+    date: string;
+    amount: number;
+    avatar: string;
+}
+
+export const moneyCasts: MoneyCast[] = [
+    { id: '1', name: 'Claire', description: 'Coffee & Lunch', date: 'today', amount: 12.50, avatar: '👩' },
+    { id: '2', name: 'John', description: 'Dinner Split', date: 'Apr, 12', amount: 25.00, avatar: '👨' },
+    { id: '3', name: 'Mo', description: 'Movie Tickets', date: 'Apr, 24', amount: 18.00, avatar: '👨' },
+    { id: '4', name: 'Lisa', description: 'Grocery Run', date: 'Mar, 1', amount: 42.30, avatar: '👩' },
+];
+
+// ========== UPCOMING SUMMONS (SCHEDULED PAYMENTS) ==========
+export interface UpcomingSummon {
+    id: string;
+    name: string;
+    date: string;
+    amount: number;
+    icon: string;
+    iconBg: string;
+}
+
+export const upcomingSummons: UpcomingSummon[] = [
+    { id: '1', name: 'Netflix', date: 'today', amount: -15, icon: '🎬', iconBg: '#E50913' },
+    { id: '2', name: 'Spotify', date: 'tomorrow', amount: -10, icon: '🎵', iconBg: '#10B981' },
+    { id: '3', name: 'Water bill', date: '3 days', amount: -70, icon: '💧', iconBg: '#0066FF' },
+    { id: '4', name: 'Pet bill', date: '5 days', amount: -100, icon: '🐕', iconBg: '#8B4513' },
+];
+
+// ========== TREASURE TRACKER (INCOME CHART DATA) ==========
+export interface TreasureTrackerPoint {
+    week: string;
+    value: number;
+}
+
+export const treasureTrackerData: TreasureTrackerPoint[] = [
+    { week: 'WK1', value: 9500 },
+    { week: 'WK2', value: 10200 },
+    { week: 'WK3', value: 11760 },
+    { week: 'WK4', value: 12500 },
+];
+
+// ========== FINWIZ CHESTS (MAIN ACCOUNTS VIEW) ==========
+export interface FinWizChest {
+    id: string;
+    name: string;
+    highlight: string;
+    balance: number;
+    status: 'Active' | 'Growing' | 'Available' | 'Current magic';
+    theme: 'purple' | 'yellow' | 'pink' | 'green';
+}
+
+export const finWizChests: FinWizChest[] = [
+    { id: '1', name: 'Current', highlight: 'Magic', balance: 2300.00, status: 'Active', theme: 'purple' },
+    { id: '2', name: 'Dream', highlight: 'Vault', balance: 11000.00, status: 'Growing', theme: 'yellow' },
+    { id: '3', name: 'Credit', highlight: 'Sorcery', balance: -1070.00, status: 'Available', theme: 'pink' },
+    { id: '4', name: 'Available', highlight: 'now', balance: 2300.00, status: 'Current magic', theme: 'green' },
+];
+
+// ========== TOTAL COINS ==========
+export const totalCoins = 12230.00;
+

@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function DashboardPage() {
+export default function AccountsPage() {
     const [showTips, setShowTips] = useState(true);
     const [achievementFilter, setAchievementFilter] = useState<string>('all');
 
@@ -46,47 +46,36 @@ export default function DashboardPage() {
         return true;
     });
 
-    // Theme colors for chests - matching Figma specs
+    // Theme colors for chests
     const chestThemes = {
         purple: {
             bg: 'bg-[#2F04B0]',
             text: 'text-white',
             highlight: 'text-[#FFD466]',
-            statusBg: 'bg-[#0A4517]', // brand/card-badge
+            statusBg: 'bg-[#00A326]',
             statusText: 'text-white',
-            viewBtnBg: 'bg-white',
-            viewBtnText: 'text-[#2F04B0]',
-            border: '',
         },
         yellow: {
             bg: 'bg-[#FFB602]',
-            text: 'text-[#120048]',
+            text: 'text-gray-900',
             highlight: 'text-[#7A5600]',
-            statusBg: 'bg-[#0A4517]',
+            statusBg: 'bg-[#00A326]',
             statusText: 'text-white',
-            viewBtnBg: 'bg-white',
-            viewBtnText: 'text-[#2F04B0]',
-            border: '',
         },
         pink: {
-            bg: 'bg-[#FCBFBA]',
-            text: 'text-[#120048]',
+            bg: 'bg-[#F5B5B5]',
+            text: 'text-gray-900',
             highlight: 'text-[#8B2E2E]',
-            statusBg: 'bg-[#0A4517]',
+            statusBg: 'bg-[#00A326]',
             statusText: 'text-white',
-            viewBtnBg: 'bg-white',
-            viewBtnText: 'text-[#2F04B0]',
-            border: '',
         },
         green: {
             bg: 'bg-white',
-            text: 'text-[#120048]',
+            text: 'text-gray-900',
             highlight: 'text-[#00A326]',
-            statusBg: 'bg-[#0A4517]',
+            statusBg: 'bg-[#00A326]',
             statusText: 'text-white',
             border: 'border-2 border-[#00A326]',
-            viewBtnBg: 'bg-[#2F04B0]',
-            viewBtnText: 'text-white',
         },
     };
 
@@ -187,27 +176,36 @@ export default function DashboardPage() {
                             <Link
                                 key={chest.id}
                                 href="/accounts/current"
-                                className={`${theme.bg} ${theme.border} rounded-[20px] p-5 relative overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer`}
+                                className={`${theme.bg} ${theme.border || ''} rounded-[20px] p-5 relative overflow-hidden transition-transform hover:scale-[1.02] cursor-pointer`}
                             >
-                                {/* Title + Badge Row */}
-                                <div className="flex items-center justify-between mb-3">
-                                    <span className={`text-xs font-medium ${theme.text}`}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className={`text-sm font-medium ${theme.text}`}>
                                         {chest.name} <span className={`font-semibold ${theme.highlight}`}>{chest.highlight}</span>
                                     </span>
-                                    <span className={`${theme.statusBg} ${theme.statusText} text-xs font-medium px-2 py-1 rounded-[5px]`}>
+                                    <span className={`${theme.statusBg} ${theme.statusText} text-xs font-semibold px-3 py-1 rounded-full`}>
                                         {chest.status}
                                     </span>
                                 </div>
 
-                                {/* Amount + View Button Row */}
-                                <div className="flex items-center justify-between">
-                                    <p className={`text-2xl font-bold ${theme.text} tracking-tight`}>
-                                        £{Math.abs(chest.balance).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
-                                    </p>
-                                    <button className={`${theme.viewBtnBg} ${theme.viewBtnText} text-sm font-normal px-3 py-1.5 rounded-[14px] hover:opacity-90 transition-all`}>
+                                <p className={`text-2xl font-bold ${theme.text} mb-4`}>
+                                    £{Math.abs(chest.balance).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                                </p>
+
+                                {chest.theme === 'green' ? (
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-1 text-[#00A326] text-xs font-medium">
+                                            <span className="w-4 h-4 bg-[#00A326] rounded-full flex items-center justify-center text-white text-[10px]">✓</span>
+                                            Smart Budget Master
+                                        </span>
+                                        <button className="bg-[#2F04B0] text-white text-xs font-semibold px-4 py-1.5 rounded-full">
+                                            Quick transfer
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button className={`border-2 ${chest.theme === 'purple' ? 'border-white text-white' : 'border-gray-700 text-gray-700'} text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-white/10 transition-all`}>
                                         View
                                     </button>
-                                </div>
+                                )}
                             </Link>
                         );
                     })}
@@ -232,10 +230,10 @@ export default function DashboardPage() {
                             key={tab.key}
                             onClick={() => setAchievementFilter(tab.key)}
                             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${achievementFilter === tab.key
-                                ? 'bg-[#120048] text-white'
-                                : tab.filled
                                     ? 'bg-[#120048] text-white'
-                                    : 'bg-white text-[#120048] border-2 border-[#120048]'
+                                    : tab.filled
+                                        ? 'bg-[#120048] text-white'
+                                        : 'bg-white text-[#120048] border-2 border-[#120048]'
                                 }`}
                         >
                             {tab.label}
@@ -245,77 +243,63 @@ export default function DashboardPage() {
 
                 {/* Achievement Cards */}
                 <div className="grid lg:grid-cols-2 gap-4 mb-6">
-                    {filteredAchievements.slice(0, 4).map((achievement) => {
-                        const isCompleted = achievement.progress === 100;
-                        return (
-                            <div
-                                key={achievement.id}
-                                className={`rounded-[20px] p-6 border transition-all relative ${isCompleted
-                                        ? 'bg-[#F4FBF6] border-[#00A326]'
-                                        : 'bg-white border-surface-divider'
-                                    }`}
-                            >
-                                <div className="flex items-start gap-4">
-                                    {/* Trophy Icon */}
-                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${isCompleted ? 'bg-[#E5F6E8] text-[#00A326]' : 'bg-[#FAFAFA] text-[#FFB602]'
-                                        }`}>
-                                        <Trophy className="w-6 h-6" />
+                    {filteredAchievements.slice(0, 4).map((achievement) => (
+                        <div
+                            key={achievement.id}
+                            className="bg-white rounded-[20px] p-6 border-2 border-[#00A326]/30 relative"
+                        >
+                            <div className="flex items-start gap-4">
+                                {/* Trophy Icon */}
+                                <div className="w-12 h-12 bg-[#FFB602]/20 rounded-xl flex items-center justify-center shrink-0">
+                                    <Trophy className="w-6 h-6 text-[#FFB602]" />
+                                </div>
+
+                                {/* Content */}
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between mb-1">
+                                        <h3 className="font-bold text-text-primary">{achievement.title}</h3>
+                                        <span className={`${difficultyColors[achievement.difficulty]} text-xs font-semibold px-3 py-1 rounded-full`}>
+                                            {achievement.difficulty}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-text-secondary mb-3">{achievement.description}</p>
+
+                                    <div className="flex items-center justify-between mb-3">
+                                        <span className="text-sm">
+                                            <span className="text-brand-primary font-semibold">Reward:</span>{' '}
+                                            <span className="text-text-primary font-medium">{achievement.reward}</span>
+                                        </span>
+                                        {achievement.completedDate && (
+                                            <span className="text-xs text-text-secondary">{achievement.completedDate}</span>
+                                        )}
+                                        {!achievement.completedDate && (
+                                            <span className="text-xs text-text-secondary">{achievement.progress}% done</span>
+                                        )}
                                     </div>
 
-                                    {/* Content */}
-                                    <div className="flex-1">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <h3 className="font-bold text-text-primary text-base">{achievement.title}</h3>
-                                            <span className={`${difficultyColors[achievement.difficulty]} text-xs font-medium px-3 py-1 rounded-full`}>
-                                                {achievement.difficulty}
-                                            </span>
+                                    {/* Progress Bar (for incomplete) */}
+                                    {achievement.progress < 100 && (
+                                        <div className="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
+                                            <div
+                                                className="h-full bg-[#120048] rounded-full transition-all"
+                                                style={{ width: `${achievement.progress}%` }}
+                                            />
                                         </div>
-                                        <p className="text-sm text-text-secondary mb-4">{achievement.description}</p>
+                                    )}
 
-                                        <div className="flex items-center justify-between mb-3">
-                                            <span className="text-sm">
-                                                <span className={`${isCompleted ? 'text-[#00A326]' : 'text-brand-primary'} font-semibold`}>Reward:</span>{' '}
-                                                <span className="text-text-primary font-medium">{achievement.reward}</span>
-                                            </span>
-                                            {isCompleted && achievement.completedDate && (
-                                                <span className="text-xs text-text-secondary">{achievement.completedDate}</span>
-                                            )}
-                                        </div>
-
-                                        {/* Progress Bar - Only for incomplete items */}
-                                        {!isCompleted && (
-                                            <div className="flex items-center justify-between mb-3">
-                                                <span className="text-xs text-text-secondary w-full text-right">{achievement.progress}% done</span>
-                                            </div>
-                                        )}
-                                        {!isCompleted && (
-                                            <div className="w-full h-4 bg-[#FAFAFA] rounded-[12px] mb-4 overflow-hidden flex items-center">
-                                                <div
-                                                    className="h-[12px] bg-[#2F04B0] rounded-[12px] transition-all ml-[2px]"
-                                                    style={{ width: `calc(${achievement.progress}% - 4px)` }}
-                                                />
-                                            </div>
-                                        )}
-
-                                        {/* Spacer for completed items to align buttons if needed, or just auto */}
-                                        {isCompleted && <div className="mb-4"></div>}
-
-                                        {/* Action Buttons */}
-                                        <div className="flex gap-3">
-                                            <button className={`${isCompleted ? 'bg-[#2F04B0]' : 'bg-[#2F04B0]'
-                                                } text-white px-4 py-2 rounded-[12px] text-sm font-normal hover:opacity-90 transition-all`}>
-                                                {isCompleted ? 'Repeat challenge' : 'Continue'}
-                                            </button>
-                                            <button className={`${isCompleted ? 'bg-white text-[#2F04B0] border border-[#2F04B0]' : 'bg-white text-[#2F04B0] border border-[#2F04B0]'
-                                                } px-4 py-2 rounded-[12px] text-sm font-normal hover:bg-gray-50 transition-all`}>
-                                                View tips
-                                            </button>
-                                        </div>
+                                    {/* Action Buttons */}
+                                    <div className="flex gap-3">
+                                        <button className="bg-[#2F04B0] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#240390] transition-all">
+                                            {achievement.progress === 100 ? 'Repeat challenge' : 'Continue'}
+                                        </button>
+                                        <button className="bg-white text-[#2F04B0] border-2 border-[#2F04B0] px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-50 transition-all">
+                                            View tips
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        );
-                    })}
+                        </div>
+                    ))}
                 </div>
 
                 {/* Bottom buttons */}
@@ -333,40 +317,36 @@ export default function DashboardPage() {
             <section className="mb-10">
                 <h2 className="text-xl font-bold text-brand-primary mb-6">Treasure tracker</h2>
 
-                <div className="flex flex-col lg:flex-row rounded-[24px] overflow-hidden shadow-sm h-auto lg:h-[400px]">
-                    {/* Filter Panel - White background */}
-                    <div className="bg-white p-8 lg:w-[320px] shrink-0 flex flex-col gap-6">
-                        {/* Filter Input */}
-                        <div className="w-full h-12 border border-gray-200 rounded-[12px] px-4 flex items-center justify-between">
-                            <span className="text-text-primary text-sm">Filter</span>
-                            <X className="w-4 h-4 text-gray-300 cursor-pointer" />
+                <div className="grid lg:grid-cols-[300px_1fr] gap-0 rounded-[20px] overflow-hidden">
+                    {/* Filter Panel */}
+                    <div className="bg-[#120048] p-6">
+                        <div className="bg-white rounded-lg p-3 flex items-center gap-2 mb-4">
+                            <span className="text-sm text-gray-400">Filter</span>
+                            <X className="w-4 h-4 text-gray-400 ml-auto" />
                         </div>
 
-                        {/* Filter Pills */}
-                        <div className="flex flex-wrap gap-2 content-start">
+                        <div className="flex flex-wrap gap-2">
                             {['Apr', '2025', 'income', 'line'].map((filter) => (
-                                <button
+                                <span
                                     key={filter}
-                                    className="h-8 bg-[#2F04B0] text-white px-3 rounded-full text-xs font-medium flex items-center gap-2 hover:bg-[#240390] transition-colors"
+                                    className="bg-[#2F04B0] text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
                                 >
                                     {filter}
-                                    <X className="w-3 h-3 opacity-80" />
-                                </button>
+                                    <X className="w-3 h-3" />
+                                </span>
                             ))}
                         </div>
                     </div>
 
-                    {/* Chart Area - Dark navy */}
-                    <div className="bg-[#120048] flex-1 p-8 lg:p-10 relative flex flex-col">
-                        <div className="mb-2">
-                            <h3 className="text-white font-bold text-xl mb-1">Income – Apr to May</h3>
-                            <p className="text-[#FCFCFD] text-xs opacity-70 font-normal">A line graph showing your income trajectory from April 2025 to May 2025.</p>
-                        </div>
+                    {/* Chart Area */}
+                    <div className="bg-[#120048] p-6">
+                        <h3 className="text-white font-bold text-lg mb-2">Income – Apr to May</h3>
+                        <p className="text-gray-400 text-sm mb-6">A line graph showing your income trajectory from April 2025 to May 2025.</p>
 
-                        {/* Chart Container */}
-                        <div className="flex-1 relative mt-8 min-h-[200px]">
+                        {/* Chart */}
+                        <div className="relative h-[200px]">
                             {/* Y-axis labels */}
-                            <div className="absolute left-0 top-0 bottom-8 flex flex-col justify-between text-[10px] lg:text-xs text-[#FCFCFD] opacity-50 font-medium">
+                            <div className="absolute left-0 top-0 bottom-8 flex flex-col justify-between text-xs text-gray-400">
                                 <span>£12,500.00</span>
                                 <span>£12k</span>
                                 <span>£11,500</span>
@@ -376,46 +356,30 @@ export default function DashboardPage() {
                                 <span>£9,500</span>
                             </div>
 
-                            {/* Main Chart Area */}
-                            <div className="absolute left-16 lg:left-20 right-0 top-3 bottom-0 lg:bottom-4">
-                                {/* Horizontal Grid Lines */}
-                                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none mb-8">
-                                    {[...Array(7)].map((_, i) => (
-                                        <div key={i} className="w-full h-[1px] bg-[#7159B6] opacity-10" />
-                                    ))}
-                                </div>
+                            {/* Chart line */}
+                            <svg className="absolute left-16 top-0 right-0 bottom-8" viewBox="0 0 400 160" preserveAspectRatio="none">
+                                <path
+                                    d="M 0 140 L 133 100 L 266 40 L 400 20"
+                                    fill="none"
+                                    stroke="white"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                />
+                                {/* Highlight point */}
+                                <circle cx="266" cy="40" r="8" fill="white" />
+                                <circle cx="266" cy="40" r="4" fill="#120048" />
+                            </svg>
 
-                                {/* SVG Chart */}
-                                <svg className="absolute inset-0 w-full h-full overflow-visible mb-8">
-                                    {/* The Line - Starts slightly off-canvas bottom-left to top-right */}
-                                    <path
-                                        d="M -20 180 L 350 70 L 600 20"
-                                        fill="none"
-                                        stroke="white"
-                                        strokeWidth="4"
-                                        strokeLinecap="round"
-                                        vectorEffect="non-scaling-stroke"
-                                    />
-
-                                    {/* Highlight Point at WK3 position (approx 66% width) */}
-                                    <g transform="translate(350, 70)">
-                                        <circle r="14" fill="white" />
-                                        <circle r="6" fill="#120048" />
-                                    </g>
-                                </svg>
-
-                                {/* Floating Label */}
-                                <div className="absolute left-[350px] top-[35px] -translate-x-1/2 text-white font-bold text-xl">
-                                    £11,760
-                                </div>
+                            {/* Highlighted value */}
+                            <div className="absolute right-[30%] top-[15%] text-white font-bold text-lg">
+                                £11,760
                             </div>
 
                             {/* X-axis labels */}
-                            <div className="absolute left-16 lg:left-20 right-0 bottom-0 flex justify-between text-[10px] lg:text-xs text-[#FCFCFD] opacity-50 font-medium px-4">
-                                <span>WK1</span>
-                                <span>WK2</span>
-                                <span>WK3</span>
-                                <span>WK4</span>
+                            <div className="absolute left-16 right-0 bottom-0 flex justify-between text-xs text-gray-400">
+                                {treasureTrackerData.map((point) => (
+                                    <span key={point.week}>{point.week}</span>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -461,22 +425,22 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    {/* Upcoming Summons - matching Figma 157:2552 */}
+                    {/* Upcoming Summons */}
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-bold text-text-primary">Upcoming summons</h2>
                             <button className="text-brand-primary text-sm font-medium hover:underline">view all</button>
                         </div>
 
-                        <div className="bg-surface-base rounded-[15px] border border-surface-divider overflow-hidden px-8 py-6">
+                        <div className="bg-white rounded-[20px] border border-surface-divider overflow-hidden">
                             {upcomingSummons.map((summon, index) => (
                                 <div
                                     key={summon.id}
-                                    className={`flex items-center gap-4 py-4 ${index !== upcomingSummons.length - 1 ? 'border-b border-surface-divider' : ''}`}
+                                    className={`flex items-center gap-4 p-4 ${index !== upcomingSummons.length - 1 ? 'border-b border-surface-divider' : ''}`}
                                 >
                                     {/* Icon */}
                                     <div
-                                        className="w-8 h-8 rounded-lg flex items-center justify-center text-base"
+                                        className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
                                         style={{ backgroundColor: summon.iconBg }}
                                     >
                                         {summon.icon}
@@ -486,14 +450,12 @@ export default function DashboardPage() {
                                     <span className="font-semibold text-text-primary flex-1">{summon.name}</span>
 
                                     {/* Date */}
-                                    <span className="text-sm text-text-secondary w-16">{summon.date}</span>
+                                    <span className="text-sm text-text-secondary">{summon.date}</span>
 
-                                    {/* Amount - with negative color */}
-                                    <span className="font-medium text-text-primary w-16 text-right">
-                                        <span className="text-[#F76559]">-</span>£{Math.abs(summon.amount)}
-                                    </span>
+                                    {/* Amount */}
+                                    <span className="font-semibold text-text-primary">-£{Math.abs(summon.amount)}</span>
 
-                                    <ChevronRight className="w-4 h-4 text-text-muted" />
+                                    <ChevronRight className="w-5 h-5 text-gray-400" />
                                 </div>
                             ))}
                         </div>
@@ -567,135 +529,6 @@ export default function DashboardPage() {
                             </div>
                         );
                     })}
-                </div>
-            </section>
-
-            {/* ===== SECTION 7: Partner Perks ===== */}
-            <section className="mb-10">
-                <h2 className="text-xl font-bold text-brand-primary mb-6">Partner perks</h2>
-
-                <div className="grid lg:grid-cols-3 gap-4">
-                    {/* Rounds-Ups Card */}
-                    <div className="bg-surface-base rounded-[15px] border border-surface-divider p-6">
-                        <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-[#00A326] rounded-full flex items-center justify-center text-white text-sm font-medium">
-                                    RU
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-text-primary">Rounds-Ups</h3>
-                                    <p className="text-xs text-text-secondary">Auto-save spare change</p>
-                                </div>
-                            </div>
-                            <span className="text-sm text-text-primary">Available</span>
-                        </div>
-
-                        <p className="text-sm text-text-secondary mb-4 leading-relaxed">
-                            Round every card purchase to the nearest pound and stash the difference towards your dream vault
-                        </p>
-
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-sm text-text-secondary">Estimated value this month</span>
-                            <span className="text-sm font-medium text-text-primary">~£18 / mo</span>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <button className="bg-[#00A326] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#00912A] transition-all">
-                                Enable rounds-ups
-                            </button>
-                            <button className="bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
-                                Learn more
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Credit Insights Card */}
-                    <div className="bg-surface-base rounded-[15px] border border-surface-divider p-6">
-                        <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-[#2F04B0] rounded-full flex items-center justify-center text-white text-sm font-medium">
-                                    CI
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-text-primary">Credit Insights</h3>
-                                    <p className="text-xs text-text-secondary">Gentle credit coaching</p>
-                                </div>
-                            </div>
-                            <span className="text-sm text-text-primary">Available</span>
-                        </div>
-
-                        <p className="text-sm text-text-secondary mb-4 leading-relaxed">
-                            Track score trends and get tips like lowering utilisation and setting payment reminders to boost your rating.
-                        </p>
-
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-sm text-text-secondary">Estimated value this month</span>
-                            <span className="text-sm font-medium text-[#00A326]">+£0 fees</span>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <button className="bg-[#2F04B0] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#240390] transition-all">
-                                Link credit report
-                            </button>
-                            <button className="bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
-                                Learn more
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Cashback Hub Card */}
-                    <div className="bg-surface-base rounded-[15px] border border-surface-divider p-6">
-                        <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-[#7159B6] rounded-full flex items-center justify-center text-white text-sm font-medium">
-                                    CB
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-text-primary">Cashback Hub</h3>
-                                    <p className="text-xs text-text-secondary">Personalised rewards</p>
-                                </div>
-                            </div>
-                            <span className="text-sm text-text-primary">Available</span>
-                        </div>
-
-                        <p className="text-sm text-text-secondary mb-4 leading-relaxed">
-                            Earn up to 5% back at supermarkets and streaming based on your recent categories.
-                        </p>
-
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-sm text-text-secondary">Estimated value this month</span>
-                            <span className="text-sm font-medium text-text-primary">£8 -£22 / mo</span>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <button className="bg-[#7159B6] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#5D48A0] transition-all">
-                                See current offers
-                            </button>
-                            <button className="bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
-                                Learn more
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== SECTION 8: FinWiz Boost Banner ===== */}
-            <section className="mb-10">
-                <div className="bg-gradient-to-r from-[#7159B6] via-[#F2645D] to-[#FFB602] rounded-[15px] p-6 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        {/* Sparkle Icon */}
-                        <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 3L13.5 8.5L19 10L13.5 11.5L12 17L10.5 11.5L5 10L10.5 8.5L12 3Z" fill="currentColor" />
-                        </svg>
-
-                        <p className="text-white text-base">
-                            Tiny wins add up! Try rounds-ups + cashback for a passive <span className="font-bold text-[#120048]">boost</span>.
-                        </p>
-                    </div>
-
-                    <button className="bg-white text-[#2F04B0] px-4 py-2 rounded-[12px] text-sm font-normal hover:bg-gray-100 transition-all whitespace-nowrap">
-                        See how it works
-                    </button>
                 </div>
             </section>
         </div>

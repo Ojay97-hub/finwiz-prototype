@@ -62,10 +62,10 @@ export const quickAccessCards = [
 
 // ========== TREASURE POTS (FINWIZ CHESTS) ==========
 export const treasurePots: TreasurePot[] = [
-    { id: '1', name: 'Holiday Fund', icon: '🏖️', currentAmount: 2400, goalAmount: 3000, color: '#FFB602' },
-    { id: '2', name: 'Emergency', icon: '🚨', currentAmount: 5000, goalAmount: 5000, color: '#00A326' },
-    { id: '3', name: 'New Car', icon: '🚗', currentAmount: 8500, goalAmount: 15000, color: '#7159B6' },
-    { id: '4', name: 'Christmas', icon: '🎄', currentAmount: 350, goalAmount: 1000, color: '#F2645D' },
+    { id: '1', name: 'New Car', icon: '🚗', currentAmount: 2000, goalAmount: 5000, color: '#E50913' },
+    { id: '2', name: 'Christmas', icon: '🎄', currentAmount: 3650, goalAmount: 5000, color: '#00A326' },
+    { id: '3', name: 'Holiday', icon: '☀️', currentAmount: 2000, goalAmount: 5000, color: '#FFB602' },
+    { id: '4', name: 'Rainy Day', icon: '☔', currentAmount: 3650, goalAmount: 5000, color: '#7159B6' },
 ];
 
 // ========== TRANSACTIONS ==========
@@ -453,13 +453,14 @@ export interface MoneyCast {
     date: string;
     amount: number;
     avatar: string;
+    avatarBg: string;
 }
 
 export const moneyCasts: MoneyCast[] = [
-    { id: '1', name: 'Claire', description: 'Coffee & Lunch', date: 'today', amount: 12.50, avatar: '👩' },
-    { id: '2', name: 'John', description: 'Dinner Split', date: 'Apr, 12', amount: 25.00, avatar: '👨' },
-    { id: '3', name: 'Mo', description: 'Movie Tickets', date: 'Apr, 24', amount: 18.00, avatar: '👨' },
-    { id: '4', name: 'Lisa', description: 'Grocery Run', date: 'Mar, 1', amount: 42.30, avatar: '👩' },
+    { id: '1', name: 'Claire', description: 'Coffee & Lunch', date: 'today', amount: 12.50, avatar: '👩', avatarBg: '#F97171' },
+    { id: '2', name: 'John', description: 'Dinner Split', date: 'Apr, 12', amount: 25.00, avatar: '👨', avatarBg: '#FFB602' },
+    { id: '3', name: 'Mo', description: 'Movie Tickets', date: 'Apr, 24', amount: 18.00, avatar: '👨', avatarBg: '#64B5F6' },
+    { id: '4', name: 'Lisa', description: 'Grocery Run', date: 'Mar, 1', amount: 42.30, avatar: '👩', avatarBg: '#FFB74D' },
 ];
 
 // ========== UPCOMING SUMMONS (SCHEDULED PAYMENTS) ==========
@@ -473,24 +474,66 @@ export interface UpcomingSummon {
 }
 
 export const upcomingSummons: UpcomingSummon[] = [
-    { id: '1', name: 'Netflix', date: 'today', amount: -15, icon: '🎬', iconBg: '#E50913' },
-    { id: '2', name: 'Spotify', date: 'tomorrow', amount: -10, icon: '🎵', iconBg: '#10B981' },
+    { id: '1', name: 'Netflix', date: 'today', amount: -15, icon: 'N', iconBg: '#E50913' },
+    { id: '2', name: 'Spotify', date: 'tomorrow', amount: -10, icon: '♪', iconBg: '#1DB954' },
     { id: '3', name: 'Water bill', date: '3 days', amount: -70, icon: '💧', iconBg: '#0066FF' },
-    { id: '4', name: 'Pet bill', date: '5 days', amount: -100, icon: '🐕', iconBg: '#8B4513' },
+    { id: '4', name: 'Pet bill', date: '5 days', amount: -100, icon: '🐾', iconBg: '#FF6B5B' },
 ];
 
-// ========== TREASURE TRACKER (INCOME CHART DATA) ==========
+// ========== TREASURE TRACKER (INCOME/EXPENSE CHART DATA) ==========
 export interface TreasureTrackerPoint {
     week: string;
     value: number;
+    month: string;
+    year: number;
+    type: 'income' | 'expense';
 }
 
 export const treasureTrackerData: TreasureTrackerPoint[] = [
-    { week: 'WK1', value: 9500 },
-    { week: 'WK2', value: 10200 },
-    { week: 'WK3', value: 11760 },
-    { week: 'WK4', value: 12500 },
+    // 2025 Income Data
+    { week: 'WK1', value: 9500, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK2', value: 10200, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK3', value: 11760, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12500, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK1', value: 10000, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK2', value: 10800, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK3', value: 11500, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12200, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK1', value: 8500, month: 'Mar', year: 2025, type: 'income' },
+    { week: 'WK2', value: 9200, month: 'Mar', year: 2025, type: 'income' },
+    { week: 'WK3', value: 9800, month: 'Mar', year: 2025, type: 'income' },
+    { week: 'WK4', value: 10500, month: 'Mar', year: 2025, type: 'income' },
+    // 2025 Expense Data
+    { week: 'WK1', value: 2100, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 1850, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2400, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 1950, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK1', value: 1900, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2200, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 1750, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2050, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK1', value: 2300, month: 'Mar', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 1980, month: 'Mar', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2150, month: 'Mar', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 1890, month: 'Mar', year: 2025, type: 'expense' },
+    // 2024 Data
+    { week: 'WK1', value: 8200, month: 'Dec', year: 2024, type: 'income' },
+    { week: 'WK2', value: 8900, month: 'Dec', year: 2024, type: 'income' },
+    { week: 'WK3', value: 9400, month: 'Dec', year: 2024, type: 'income' },
+    { week: 'WK4', value: 10100, month: 'Dec', year: 2024, type: 'income' },
+    { week: 'WK1', value: 2500, month: 'Dec', year: 2024, type: 'expense' },
+    { week: 'WK2', value: 3200, month: 'Dec', year: 2024, type: 'expense' },
+    { week: 'WK3', value: 2800, month: 'Dec', year: 2024, type: 'expense' },
+    { week: 'WK4', value: 3500, month: 'Dec', year: 2024, type: 'expense' },
 ];
+
+// Filter options for Treasure Tracker
+export const treasureTrackerFilters = {
+    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    years: [2024, 2025],
+    types: ['income', 'expense'] as const,
+    chartTypes: ['line', 'bar'] as const,
+};
 
 // ========== FINWIZ CHESTS (MAIN ACCOUNTS VIEW) ==========
 export interface FinWizChest {

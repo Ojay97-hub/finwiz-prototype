@@ -236,32 +236,33 @@ export default function CurrentAccountPage() {
                 </div>
 
                 {/* Right Column - Insights & Tips */}
-                <div className="flex flex-col gap-6 h-[360px]">
-                    {/* FinWiz AI Insights Toggle */}
-                    <div className="flex items-center justify-between bg-white rounded-xl p-4 border border-surface-divider shrink-0">
-                        <span className="font-medium text-text-primary">FinWiz All Insights</span>
-                        <label
-                            className="flex items-center gap-2 cursor-pointer"
-                            onClick={() => setShowTips(!showTips)}
-                        >
-                            <span className="text-sm text-text-secondary">hide</span>
-                            <div className={`w-12 h-6 rounded-full relative transition-colors ${showTips ? 'bg-brand-primary' : 'bg-gray-300'}`}>
+                <div className="flex flex-col h-[360px]">
+                    {/* Toggle Header */}
+                    <div className="flex items-center justify-between mb-4 px-1 shrink-0">
+                        <span className="text-lg font-bold text-[#120048]">FinWiz All Insights</span>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                            <div
+                                className={`w-10 h-6 rounded-full relative transition-colors ${showTips ? 'bg-[#2F04B0]' : 'bg-gray-300'}`}
+                                onClick={() => setShowTips(!showTips)}
+                            >
                                 <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${showTips ? 'right-1' : 'left-1'}`} />
                             </div>
-                            <span className="text-sm text-text-secondary">Filter tip</span>
+                            <span className="text-sm font-medium text-[#120048]">hide FinWiz tip</span>
                         </label>
                     </div>
 
-                    {/* Tips */}
+                    {/* Tips Content */}
                     {showTips ? (
-                        <div className="bg-surface-card-alt rounded-xl p-6 text-sm text-text-secondary space-y-4 flex-1 flex flex-col justify-center">
-                            {accountData.aiTips.map((tip, index) => (
-                                <p key={index}>• <strong>"{tip.title}"</strong> = {tip.description}</p>
-                            ))}
+                        <div className="bg-white border border-gray-100 rounded-[32px] p-8 flex flex-col flex-1 shadow-sm hover:shadow-md transition-shadow min-h-0">
+                            <div className="text-[#120048] text-base leading-relaxed space-y-5 h-full flex flex-col justify-center">
+                                {accountData.aiTips.map((tip, index) => (
+                                    <p key={index}>• <strong>"{tip.title}"</strong> = {tip.description}</p>
+                                ))}
+                            </div>
                         </div>
                     ) : (
-                        <div className="bg-surface-card-alt rounded-xl p-6 text-sm text-text-secondary flex-1 flex items-center justify-center">
-                            <p className="text-center">Tips are hidden. Toggle above to show.</p>
+                        <div className="bg-white border border-gray-100 rounded-[32px] p-8 flex items-center justify-center flex-1 shadow-sm min-h-0">
+                            <p className="text-center text-gray-400">Tips are hidden. Toggle above to show.</p>
                         </div>
                     )}
                 </div>

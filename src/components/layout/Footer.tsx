@@ -44,7 +44,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-16">
                     {/* Brand Column */}
                     <div className="md:col-span-5 lg:col-span-4">
-                        <Link href="/dashboard" className="block mb-8 group">
+                        <Link href="/accounts" className="block mb-8 group">
                             {/* Refined Logo */}
                             <div className="flex items-center gap-1">
                                 <span className="text-4xl font-light tracking-tight text-white group-hover:text-[#FFB602] transition-colors">

@@ -32,6 +32,14 @@ import {
     Minus,
     X,
     Trophy,
+    Car,
+    Trees,
+    Palmtree,
+    CloudRain,
+    Sun,
+    Umbrella,
+    CirclePlus,
+    CircleMinus,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -215,11 +223,11 @@ export default function AccountsPage() {
                             </p>
 
                             {/* Insight Buttons */}
-                            <div className="flex flex-wrap gap-4 mt-auto">
-                                <button className="bg-[#2F04B0] text-white px-8 py-3 rounded-full text-sm font-bold hover:bg-[#1a0060] transition-all shadow-md">
+                            <div className="flex gap-4 mt-auto w-full">
+                                <button className="flex-1 bg-[#2F04B0] text-white px-8 py-3 rounded-full text-sm font-bold hover:bg-[#1a0060] transition-all shadow-md">
                                     Show insights
                                 </button>
-                                <button className="bg-white border-2 border-[#2F04B0] text-[#2F04B0] px-8 py-3 rounded-full text-sm font-bold hover:bg-gray-50 transition-all">
+                                <button className="flex-1 bg-white border-2 border-[#2F04B0] text-[#2F04B0] px-8 py-3 rounded-full text-sm font-bold hover:bg-gray-50 transition-all">
                                     More info
                                 </button>
                             </div>
@@ -344,13 +352,14 @@ export default function AccountsPage() {
                                             </span>
                                         </div>
                                         <p className="text-sm text-text-secondary">{achievement.description}</p>
+
                                     </div>
                                 </div>
 
                                 {/* Reward Row - Full Width */}
                                 <div className="flex items-center justify-between mb-3">
                                     <span className="text-sm">
-                                        <span className={`font-semibold ${isCompleted ? 'text-[#00A326]' : 'text-brand-primary'}`}>Reward:</span>{' '}
+                                        <span className="font-semibold text-[#00A326]">Reward:</span>{' '}
                                         <span className="text-text-primary font-medium">{achievement.reward}</span>
                                     </span>
                                     {achievement.completedDate && (
@@ -363,7 +372,7 @@ export default function AccountsPage() {
 
                                 {/* Progress Bar - Full Width (for incomplete) */}
                                 {!isCompleted && (
-                                    <div className="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
+                                    <div className="w-full h-3 bg-gray-100 rounded-full mb-4 overflow-hidden">
                                         <div
                                             className="h-full bg-[#120048] rounded-full transition-all"
                                             style={{ width: `${achievement.progress}%` }}
@@ -372,7 +381,7 @@ export default function AccountsPage() {
                                 )}
 
                                 {/* Action Buttons - Full Width */}
-                                <div className="flex justify-between gap-3">
+                                <div className="flex justify-between gap-3 w-full">
                                     <button className="bg-[#2F04B0] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-[#240390] transition-all">
                                         {isCompleted ? 'Repeat challenge' : 'Continue'}
                                     </button>
@@ -386,7 +395,7 @@ export default function AccountsPage() {
                 </div>
 
                 {/* Bottom buttons */}
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-3 w-full">
                     <button className="bg-[#2F04B0] text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-[#240390] transition-all">
                         Set a new challenge
                     </button>
@@ -394,11 +403,11 @@ export default function AccountsPage() {
                         View progression
                     </button>
                 </div>
-            </section>
+            </section >
 
             {/* ===== SECTION 4: Treasure Tracker ===== */}
-            <section className="mb-10">
-                <h2 className="text-xl font-bold text-brand-primary mb-6">Treasure tracker</h2>
+            < section className="mb-10" >
+                <h2 className="text-xl font-bold text-[#120048] mb-6">Treasure tracker</h2>
 
                 <div className="grid lg:grid-cols-[300px_1fr] gap-0 rounded-[20px] overflow-hidden">
                     {/* Filter Panel */}
@@ -561,10 +570,10 @@ export default function AccountsPage() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* ===== SECTION 5: Recent Money Casts & Upcoming Summons ===== */}
-            <section className="mb-10">
+            < section className="mb-10" >
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Recent Money Casts */}
                     <div className="flex flex-col h-full">
@@ -577,7 +586,7 @@ export default function AccountsPage() {
                             {moneyCasts.map((cast, index) => (
                                 <div
                                     key={cast.id}
-                                    className={`flex items-center gap-4 py-5 px-4 ${index !== moneyCasts.length - 1 ? 'border-b border-surface-divider' : ''}`}
+                                    className={`flex items-center gap-4 px-4 h-[88px] ${index !== moneyCasts.length - 1 ? 'border-b border-surface-divider' : ''}`}
                                 >
                                     {/* Avatar - with dark navy ring border like Figma */}
                                     <div className="w-11 h-11 rounded-full border-[3px] border-[#120048] flex items-center justify-center">
@@ -618,13 +627,13 @@ export default function AccountsPage() {
                             {upcomingSummons.map((summon, index) => (
                                 <div
                                     key={summon.id}
-                                    className={`flex items-center gap-4 py-5 px-4 ${index !== upcomingSummons.length - 1 ? 'border-b border-surface-divider' : ''}`}
+                                    className={`flex items-center gap-4 px-4 h-[88px] ${index !== upcomingSummons.length - 1 ? 'border-b border-surface-divider' : ''}`}
                                 >
                                     {/* Icon - Custom SVGs based on Figma */}
                                     {summon.name === 'Netflix' && (
                                         <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M12 4C9.5 4 7.5 5.5 7.5 7.5C7.5 9 8.5 10 9.5 10.5C8 11 7 12.5 7 14C7 16.5 9 18 12 18C15 18 17 16.5 17 14C17 12.5 16 11 14.5 10.5C15.5 10 16.5 9 16.5 7.5C16.5 5.5 14.5 4 12 4ZM10 8C10 7 10.8 6 12 6C13.2 6 14 7 14 8C14 9 13.2 10 12 10C10.8 10 10 9 10 8ZM12 16C10 16 9 15 9 14C9 12.5 10.5 12 12 12C13.5 12 15 12.5 15 14C15 15 14 16 12 16Z" fill="#E50913" />
+                                                <path d="M8 4V20H10.5L14.5 10V20H17V4H14.5L10.5 14V4H8Z" fill="#E50913" />
                                             </svg>
                                         </div>
                                     )}
@@ -669,32 +678,42 @@ export default function AccountsPage() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* ===== SECTION 6: Treasure Pots Progress ===== */}
-            <section className="mb-10">
+            < section className="mb-10" >
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-bold text-text-primary">Treasure pots progress</h2>
                     <button className="text-brand-primary text-sm font-medium hover:underline">manage</button>
                 </div>
 
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {treasurePots.map((pot) => {
                         const percentage = Math.round((pot.currentAmount / pot.goalAmount) * 100);
+
+                        // Map icons based on pot name
+                        let PotIcon = Trophy;
+                        let iconBgColor = pot.color;
+
+                        if (pot.name === 'New Car') PotIcon = Car;
+                        else if (pot.name === 'Christmas') PotIcon = Trees;
+                        else if (pot.name === 'Holiday') PotIcon = Palmtree; // Using Palmtree for Holiday
+                        else if (pot.name === 'Rainy Day') PotIcon = CloudRain;
+
                         return (
                             <div
                                 key={pot.id}
                                 className="bg-white rounded-[20px] p-5 border border-surface-divider"
                             >
                                 <div className="flex items-center justify-between mb-3">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-3">
                                         <div
-                                            className="w-8 h-8 rounded-lg flex items-center justify-center text-lg"
-                                            style={{ backgroundColor: `${pot.color}20` }}
+                                            className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                                            style={{ backgroundColor: pot.color }}
                                         >
-                                            {pot.icon}
+                                            <PotIcon className="w-6 h-6 text-white" />
                                         </div>
-                                        <span className="font-semibold text-text-primary">{pot.name}</span>
+                                        <span className="font-bold text-[#120048] text-lg">{pot.name}</span>
                                     </div>
                                     <span
                                         className="text-xs font-semibold px-2 py-1 rounded-full"
@@ -707,17 +726,17 @@ export default function AccountsPage() {
                                     </span>
                                 </div>
 
-                                <p className="text-lg mb-2">
+                                <p className="text-xl mb-4 mt-2">
                                     <span className="font-bold" style={{ color: pot.color }}>
                                         £{pot.currentAmount.toLocaleString('en-GB')}
                                     </span>
-                                    <span className="text-text-secondary">/ £{pot.goalAmount.toLocaleString('en-GB')}</span>
+                                    <span className="text-gray-400 font-medium text-base"> / £{pot.goalAmount.toLocaleString('en-GB')}</span>
                                 </p>
 
                                 {/* Progress Bar */}
-                                <div className="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
+                                <div className="w-full h-3 bg-gray-100 rounded-full mb-6 overflow-hidden">
                                     <div
-                                        className="h-full rounded-full transition-all"
+                                        className="h-full rounded-full transition-all duration-1000 ease-out"
                                         style={{
                                             width: `${percentage}%`,
                                             backgroundColor: '#120048',
@@ -726,23 +745,23 @@ export default function AccountsPage() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className="flex gap-2">
-                                    <button className="flex items-center gap-1 text-[#00A326] text-xs font-semibold border border-[#00A326] px-3 py-1.5 rounded-full hover:bg-[#00A326]/10 transition-all">
-                                        <Plus className="w-3 h-3" /> add money
+                                <div className="flex gap-3 mt-auto">
+                                    <button className="flex-1 flex items-center justify-center gap-1.5 bg-[#2F04B0] text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-[#240390] transition-all">
+                                        <CirclePlus className="w-4 h-4" strokeWidth={2.5} /> add money
                                     </button>
-                                    <button className="flex items-center gap-1 text-[#2F04B0] text-xs font-semibold border border-[#2F04B0] px-3 py-1.5 rounded-full hover:bg-[#2F04B0]/10 transition-all">
-                                        <Minus className="w-3 h-3" /> take money
+                                    <button className="flex-1 flex items-center justify-center gap-1.5 bg-white text-[#2F04B0] text-sm font-bold border border-[#2F04B0] px-4 py-2 rounded-full hover:bg-gray-50 transition-all">
+                                        <CircleMinus className="w-4 h-4" strokeWidth={2.5} /> take money
                                     </button>
                                 </div>
                             </div>
                         );
                     })}
                 </div>
-            </section>
+            </section >
 
             {/* ===== SECTION 7: Partner Perks ===== */}
             <section className="mb-10">
-                <h2 className="text-xl font-bold text-brand-primary mb-6">Partner perks</h2>
+                <h2 className="text-xl font-bold text-[#120048] mb-6">Partner perks</h2>
 
                 <div className="grid lg:grid-cols-3 gap-4">
                     {/* Rounds-Ups Card */}
@@ -757,7 +776,7 @@ export default function AccountsPage() {
                                     <p className="text-xs text-text-secondary">Auto-save spare change</p>
                                 </div>
                             </div>
-                            <span className="text-sm text-text-primary">Available</span>
+                            <span className="px-4 py-1.5 bg-[#F5F7FA] text-[#120048] rounded-full text-sm font-bold">Available</span>
                         </div>
 
                         <p className="text-sm text-text-secondary mb-4 leading-relaxed">
@@ -769,11 +788,11 @@ export default function AccountsPage() {
                             <span className="text-sm font-medium text-text-primary">~£18 / mo</span>
                         </div>
 
-                        <div className="flex gap-3">
-                            <button className="bg-[#00A326] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#00912A] transition-all">
+                        <div className="flex gap-3 w-full">
+                            <button className="flex-1 bg-[#00A326] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#00912A] transition-all">
                                 Enable rounds-ups
                             </button>
-                            <button className="bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
+                            <button className="flex-1 bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
                                 Learn more
                             </button>
                         </div>
@@ -791,7 +810,7 @@ export default function AccountsPage() {
                                     <p className="text-xs text-text-secondary">Gentle credit coaching</p>
                                 </div>
                             </div>
-                            <span className="text-sm text-text-primary">Available</span>
+                            <span className="px-4 py-1.5 bg-[#F5F7FA] text-[#120048] rounded-full text-sm font-bold">Available</span>
                         </div>
 
                         <p className="text-sm text-text-secondary mb-4 leading-relaxed">
@@ -803,11 +822,11 @@ export default function AccountsPage() {
                             <span className="text-sm font-medium text-[#00A326]">+£0 fees</span>
                         </div>
 
-                        <div className="flex gap-3">
-                            <button className="bg-[#2F04B0] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#240390] transition-all">
+                        <div className="flex gap-3 w-full">
+                            <button className="flex-1 bg-[#2F04B0] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#240390] transition-all">
                                 Link credit report
                             </button>
-                            <button className="bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
+                            <button className="flex-1 bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
                                 Learn more
                             </button>
                         </div>
@@ -825,7 +844,7 @@ export default function AccountsPage() {
                                     <p className="text-xs text-text-secondary">Personalised rewards</p>
                                 </div>
                             </div>
-                            <span className="text-sm text-text-primary">Available</span>
+                            <span className="px-4 py-1.5 bg-[#F5F7FA] text-[#120048] rounded-full text-sm font-bold">Available</span>
                         </div>
 
                         <p className="text-sm text-text-secondary mb-4 leading-relaxed">
@@ -837,20 +856,20 @@ export default function AccountsPage() {
                             <span className="text-sm font-medium text-text-primary">£8 -£22 / mo</span>
                         </div>
 
-                        <div className="flex gap-3">
-                            <button className="bg-[#7159B6] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#5D48A0] transition-all">
+                        <div className="flex gap-3 w-full">
+                            <button className="flex-1 bg-[#7159B6] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#5D48A0] transition-all">
                                 See current offers
                             </button>
-                            <button className="bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
+                            <button className="flex-1 bg-white text-[#2F04B0] border border-[#2F04B0] px-4 py-2 rounded-full text-sm font-normal hover:bg-gray-50 transition-all">
                                 Learn more
                             </button>
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* ===== SECTION 8: FinWiz Boost Banner ===== */}
-            <section className="mb-10">
+            < section className="mb-10" >
                 <div className="bg-gradient-to-r from-[#7159B6] via-[#F2645D] to-[#FFB602] rounded-[15px] p-6 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         {/* Sparkle Icon */}
@@ -867,7 +886,7 @@ export default function AccountsPage() {
                         See how it works
                     </button>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     );
 }

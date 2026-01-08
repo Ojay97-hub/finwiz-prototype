@@ -12,6 +12,7 @@ import {
   Receipt,
   ShoppingCart
 } from 'lucide-react';
+import type * as LType from 'leaflet';
 
 // Extended icon mapping
 const iconMapping: { [key: string]: React.ElementType } = {
@@ -49,11 +50,11 @@ const defaultMarkers: MapMarker[] = [
 
 export default function SpendingMap({ markers }: SpendingMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
-  const markersLayerRef = useRef<L.LayerGroup | null>(null);
+  const mapInstanceRef = useRef<LType.Map | null>(null);
+  const markersLayerRef = useRef<LType.LayerGroup | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [mapReady, setMapReady] = useState(false);
-  const [leaflet, setLeaflet] = useState<typeof import('leaflet') | null>(null);
+  const [L, setL] = useState<typeof LType | null>(null);
 
   // Use provided markers or default ones
   const markersData = useMemo(() => markers || defaultMarkers, [markers]);
@@ -67,9 +68,10 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
     if (!isClient || !mapContainerRef.current) return;
 
     const initMap = async () => {
-      const L = await import('leaflet');
+      const leaflet = await import('leaflet');
+      // @ts-expect-error - CSS import for side effects
       await import('leaflet/dist/leaflet.css');
-      setLeaflet(L);
+      setL(leaflet);
 
       // Clean up existing map instance if any
       if (mapInstanceRef.current) {
@@ -78,7 +80,7 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
       }
 
       // Create the map
-      const map = L.default.map(mapContainerRef.current!, {
+      const map = leaflet.map(mapContainerRef.current!, {
         center: [51.510, -0.120],
         zoom: 13,
         scrollWheelZoom: false,
@@ -88,10 +90,10 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
       mapInstanceRef.current = map;
 
       // Create a layer group for markers
-      markersLayerRef.current = L.default.layerGroup().addTo(map);
+      markersLayerRef.current = leaflet.layerGroup().addTo(map);
 
       // Add tile layer
-      L.default.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       }).addTo(map);
 
@@ -115,9 +117,7 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
 
   // Update markers when data changes or map becomes ready
   useEffect(() => {
-    if (!leaflet || !mapInstanceRef.current || !markersLayerRef.current || !mapReady) return;
-
-    const L = leaflet;
+    if (!L || !mapInstanceRef.current || !markersLayerRef.current || !mapReady) return;
 
     // Clear existing markers
     markersLayerRef.current.clearLayers();
@@ -132,7 +132,7 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
         </div>
       );
 
-      const customIcon = L.default.divIcon({
+      const customIcon = L.divIcon({
         html: `
                     <div style="width: 36px; height: 36px; background-color: ${markerData.color}; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border: 2px solid white; transition: transform 0.2s, box-shadow 0.2s;" 
                          onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.3)';"
@@ -145,7 +145,7 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
         iconAnchor: [18, 18],
       });
 
-      const marker = L.default.marker(markerData.pos, { icon: customIcon });
+      const marker = L.marker(markerData.pos, { icon: customIcon });
 
       // Add tooltip with spending info if available
       if (markerData.merchantName && markerData.totalAmount !== undefined) {
@@ -167,13 +167,13 @@ export default function SpendingMap({ markers }: SpendingMapProps) {
 
     // Fit bounds to show all markers if there are any
     if (markersData.length > 0) {
-      const bounds = L.default.latLngBounds(markersData.map(m => m.pos));
+      const bounds = L.latLngBounds(markersData.map(m => m.pos));
       mapInstanceRef.current.fitBounds(bounds, {
         padding: [50, 50],
         maxZoom: 14
       });
     }
-  }, [markersData, leaflet, mapReady]);
+  }, [markersData, L, mapReady]);
 
   if (!isClient) {
     return (

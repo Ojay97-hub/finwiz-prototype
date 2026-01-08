@@ -454,13 +454,21 @@ export interface MoneyCast {
     amount: number;
     avatar: string;
     avatarBg: string;
+    time?: string;
+    method?: string;
 }
 
 export const moneyCasts: MoneyCast[] = [
-    { id: '1', name: 'Claire', description: 'Coffee & Lunch', date: 'today', amount: 12.50, avatar: '👩', avatarBg: '#F97171' },
-    { id: '2', name: 'John', description: 'Dinner Split', date: 'Apr, 12', amount: 25.00, avatar: '👨', avatarBg: '#FFB602' },
-    { id: '3', name: 'Mo', description: 'Movie Tickets', date: 'Apr, 24', amount: 18.00, avatar: '👨', avatarBg: '#64B5F6' },
-    { id: '4', name: 'Lisa', description: 'Grocery Run', date: 'Mar, 1', amount: 42.30, avatar: '👩', avatarBg: '#FFB74D' },
+    { id: '1', name: 'Claire', description: 'Coffee & Lunch', date: 'today', amount: 12.50, avatar: '👩', avatarBg: '#F97171', time: '14:32', method: 'Bank transfer' },
+    { id: '2', name: 'John', description: 'Dinner Split', date: 'Apr, 12', amount: 25.00, avatar: '👨', avatarBg: '#FFB602', time: '20:15', method: 'PayPal' },
+    { id: '3', name: 'Mo', description: 'Movie Tickets', date: 'Apr, 24', amount: 18.00, avatar: '👨', avatarBg: '#64B5F6', time: '19:45', method: 'Bank transfer' },
+    { id: '4', name: 'Lisa', description: 'Grocery Run', date: 'Mar, 1', amount: 42.30, avatar: '👩', avatarBg: '#FFB74D', time: '16:20', method: 'Monzo' },
+    { id: '5', name: 'David', description: 'Birthday Gift', date: 'Feb, 28', amount: 50.00, avatar: '👨', avatarBg: '#9C27B0', time: '09:00', method: 'Bank transfer' },
+    { id: '6', name: 'Emma', description: 'Concert Tickets', date: 'Feb, 15', amount: 65.00, avatar: '👩', avatarBg: '#E91E63', time: '11:30', method: 'Revolut' },
+    { id: '7', name: 'Mike', description: 'Uber Split', date: 'Feb, 10', amount: 8.50, avatar: '👨', avatarBg: '#2196F3', time: '23:45', method: 'Monzo' },
+    { id: '8', name: 'Sarah', description: 'Rent Share', date: 'Feb, 1', amount: 425.00, avatar: '👩', avatarBg: '#4CAF50', time: '00:01', method: 'Bank transfer' },
+    { id: '9', name: 'Alex', description: 'Gaming Sub', date: 'Jan, 25', amount: 7.99, avatar: '👨', avatarBg: '#FF5722', time: '12:00', method: 'PayPal' },
+    { id: '10', name: 'Nina', description: 'Gym Class', date: 'Jan, 20', amount: 15.00, avatar: '👩', avatarBg: '#795548', time: '18:00', method: 'Bank transfer' },
 ];
 
 // ========== UPCOMING SUMMONS (SCHEDULED PAYMENTS) ==========
@@ -471,13 +479,21 @@ export interface UpcomingSummon {
     amount: number;
     icon: string;
     iconBg: string;
+    category?: string;
+    recurring?: boolean;
 }
 
 export const upcomingSummons: UpcomingSummon[] = [
-    { id: '1', name: 'Netflix', date: 'today', amount: -15, icon: 'N', iconBg: '#E50913' },
-    { id: '2', name: 'Spotify', date: 'tomorrow', amount: -10, icon: '♪', iconBg: '#1DB954' },
-    { id: '3', name: 'Water bill', date: '3 days', amount: -70, icon: '💧', iconBg: '#0066FF' },
-    { id: '4', name: 'Pet bill', date: '5 days', amount: -100, icon: '🐾', iconBg: '#FF6B5B' },
+    { id: '1', name: 'Netflix', date: 'today', amount: -15, icon: 'N', iconBg: '#E50913', category: 'Entertainment', recurring: true },
+    { id: '2', name: 'Spotify', date: 'tomorrow', amount: -10, icon: '♪', iconBg: '#1DB954', category: 'Entertainment', recurring: true },
+    { id: '3', name: 'Water bill', date: '3 days', amount: -70, icon: '💧', iconBg: '#0066FF', category: 'Bills', recurring: true },
+    { id: '4', name: 'Pet bill', date: '5 days', amount: -100, icon: '🐾', iconBg: '#FF6B5B', category: 'Pet Care', recurring: true },
+    { id: '5', name: 'Rent', date: '7 days', amount: -1200, icon: '🏠', iconBg: '#120048', category: 'Housing', recurring: true },
+    { id: '6', name: 'Council Tax', date: '10 days', amount: -145, icon: '🏛️', iconBg: '#7167BF', category: 'Bills', recurring: true },
+    { id: '7', name: 'Phone Bill', date: '12 days', amount: -35, icon: '📱', iconBg: '#009999', category: 'Bills', recurring: true },
+    { id: '8', name: 'Gym Membership', date: '15 days', amount: -30, icon: '💪', iconBg: '#000000', category: 'Health', recurring: true },
+    { id: '9', name: 'Car Insurance', date: '20 days', amount: -85, icon: '🚗', iconBg: '#E50913', category: 'Transport', recurring: true },
+    { id: '10', name: 'Adobe Creative', date: '25 days', amount: -52, icon: '💻', iconBg: '#FF0000', category: 'Subscriptions', recurring: true },
 ];
 
 // ========== TREASURE TRACKER (INCOME/EXPENSE CHART DATA) ==========
@@ -490,33 +506,131 @@ export interface TreasureTrackerPoint {
 }
 
 export const treasureTrackerData: TreasureTrackerPoint[] = [
-    // 2025 Income Data
-    { week: 'WK1', value: 9500, month: 'Apr', year: 2025, type: 'income' },
-    { week: 'WK2', value: 10200, month: 'Apr', year: 2025, type: 'income' },
-    { week: 'WK3', value: 11760, month: 'Apr', year: 2025, type: 'income' },
-    { week: 'WK4', value: 12500, month: 'Apr', year: 2025, type: 'income' },
-    { week: 'WK1', value: 10000, month: 'May', year: 2025, type: 'income' },
-    { week: 'WK2', value: 10800, month: 'May', year: 2025, type: 'income' },
-    { week: 'WK3', value: 11500, month: 'May', year: 2025, type: 'income' },
-    { week: 'WK4', value: 12200, month: 'May', year: 2025, type: 'income' },
+    // ===== 2025 INCOME DATA =====
+    // January 2025
+    { week: 'WK1', value: 8200, month: 'Jan', year: 2025, type: 'income' },
+    { week: 'WK2', value: 8800, month: 'Jan', year: 2025, type: 'income' },
+    { week: 'WK3', value: 9100, month: 'Jan', year: 2025, type: 'income' },
+    { week: 'WK4', value: 9500, month: 'Jan', year: 2025, type: 'income' },
+    // February 2025
+    { week: 'WK1', value: 8800, month: 'Feb', year: 2025, type: 'income' },
+    { week: 'WK2', value: 9200, month: 'Feb', year: 2025, type: 'income' },
+    { week: 'WK3', value: 9600, month: 'Feb', year: 2025, type: 'income' },
+    { week: 'WK4', value: 10100, month: 'Feb', year: 2025, type: 'income' },
+    // March 2025
     { week: 'WK1', value: 8500, month: 'Mar', year: 2025, type: 'income' },
     { week: 'WK2', value: 9200, month: 'Mar', year: 2025, type: 'income' },
     { week: 'WK3', value: 9800, month: 'Mar', year: 2025, type: 'income' },
     { week: 'WK4', value: 10500, month: 'Mar', year: 2025, type: 'income' },
-    // 2025 Expense Data
-    { week: 'WK1', value: 2100, month: 'Apr', year: 2025, type: 'expense' },
-    { week: 'WK2', value: 1850, month: 'Apr', year: 2025, type: 'expense' },
-    { week: 'WK3', value: 2400, month: 'Apr', year: 2025, type: 'expense' },
-    { week: 'WK4', value: 1950, month: 'Apr', year: 2025, type: 'expense' },
-    { week: 'WK1', value: 1900, month: 'May', year: 2025, type: 'expense' },
-    { week: 'WK2', value: 2200, month: 'May', year: 2025, type: 'expense' },
-    { week: 'WK3', value: 1750, month: 'May', year: 2025, type: 'expense' },
-    { week: 'WK4', value: 2050, month: 'May', year: 2025, type: 'expense' },
+    // April 2025
+    { week: 'WK1', value: 9500, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK2', value: 10200, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK3', value: 11760, month: 'Apr', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12500, month: 'Apr', year: 2025, type: 'income' },
+    // May 2025
+    { week: 'WK1', value: 10000, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK2', value: 10800, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK3', value: 11500, month: 'May', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12200, month: 'May', year: 2025, type: 'income' },
+    // June 2025
+    { week: 'WK1', value: 10500, month: 'Jun', year: 2025, type: 'income' },
+    { week: 'WK2', value: 11200, month: 'Jun', year: 2025, type: 'income' },
+    { week: 'WK3', value: 11800, month: 'Jun', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12600, month: 'Jun', year: 2025, type: 'income' },
+    // July 2025
+    { week: 'WK1', value: 9800, month: 'Jul', year: 2025, type: 'income' },
+    { week: 'WK2', value: 10400, month: 'Jul', year: 2025, type: 'income' },
+    { week: 'WK3', value: 10900, month: 'Jul', year: 2025, type: 'income' },
+    { week: 'WK4', value: 11500, month: 'Jul', year: 2025, type: 'income' },
+    // August 2025
+    { week: 'WK1', value: 10200, month: 'Aug', year: 2025, type: 'income' },
+    { week: 'WK2', value: 10800, month: 'Aug', year: 2025, type: 'income' },
+    { week: 'WK3', value: 11400, month: 'Aug', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12100, month: 'Aug', year: 2025, type: 'income' },
+    // September 2025
+    { week: 'WK1', value: 11000, month: 'Sep', year: 2025, type: 'income' },
+    { week: 'WK2', value: 11600, month: 'Sep', year: 2025, type: 'income' },
+    { week: 'WK3', value: 12200, month: 'Sep', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12900, month: 'Sep', year: 2025, type: 'income' },
+    // October 2025
+    { week: 'WK1', value: 10800, month: 'Oct', year: 2025, type: 'income' },
+    { week: 'WK2', value: 11400, month: 'Oct', year: 2025, type: 'income' },
+    { week: 'WK3', value: 12000, month: 'Oct', year: 2025, type: 'income' },
+    { week: 'WK4', value: 12700, month: 'Oct', year: 2025, type: 'income' },
+    // November 2025
+    { week: 'WK1', value: 11500, month: 'Nov', year: 2025, type: 'income' },
+    { week: 'WK2', value: 12100, month: 'Nov', year: 2025, type: 'income' },
+    { week: 'WK3', value: 12800, month: 'Nov', year: 2025, type: 'income' },
+    { week: 'WK4', value: 13500, month: 'Nov', year: 2025, type: 'income' },
+    // December 2025
+    { week: 'WK1', value: 12000, month: 'Dec', year: 2025, type: 'income' },
+    { week: 'WK2', value: 12800, month: 'Dec', year: 2025, type: 'income' },
+    { week: 'WK3', value: 13500, month: 'Dec', year: 2025, type: 'income' },
+    { week: 'WK4', value: 14200, month: 'Dec', year: 2025, type: 'income' },
+
+    // ===== 2025 EXPENSE DATA =====
+    // January 2025
+    { week: 'WK1', value: 1800, month: 'Jan', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2100, month: 'Jan', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 1950, month: 'Jan', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2300, month: 'Jan', year: 2025, type: 'expense' },
+    // February 2025
+    { week: 'WK1', value: 1950, month: 'Feb', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2050, month: 'Feb', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2200, month: 'Feb', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 1900, month: 'Feb', year: 2025, type: 'expense' },
+    // March 2025
     { week: 'WK1', value: 2300, month: 'Mar', year: 2025, type: 'expense' },
     { week: 'WK2', value: 1980, month: 'Mar', year: 2025, type: 'expense' },
     { week: 'WK3', value: 2150, month: 'Mar', year: 2025, type: 'expense' },
     { week: 'WK4', value: 1890, month: 'Mar', year: 2025, type: 'expense' },
-    // 2024 Data
+    // April 2025
+    { week: 'WK1', value: 2100, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 1850, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2400, month: 'Apr', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 1950, month: 'Apr', year: 2025, type: 'expense' },
+    // May 2025
+    { week: 'WK1', value: 1900, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2200, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 1750, month: 'May', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2050, month: 'May', year: 2025, type: 'expense' },
+    // June 2025
+    { week: 'WK1', value: 2400, month: 'Jun', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2100, month: 'Jun', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2550, month: 'Jun', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2300, month: 'Jun', year: 2025, type: 'expense' },
+    // July 2025
+    { week: 'WK1', value: 2600, month: 'Jul', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2800, month: 'Jul', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2450, month: 'Jul', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2700, month: 'Jul', year: 2025, type: 'expense' },
+    // August 2025
+    { week: 'WK1', value: 2200, month: 'Aug', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2350, month: 'Aug', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2100, month: 'Aug', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2450, month: 'Aug', year: 2025, type: 'expense' },
+    // September 2025
+    { week: 'WK1', value: 2000, month: 'Sep', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2150, month: 'Sep', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2300, month: 'Sep', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2050, month: 'Sep', year: 2025, type: 'expense' },
+    // October 2025
+    { week: 'WK1', value: 2400, month: 'Oct', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2250, month: 'Oct', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2600, month: 'Oct', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2350, month: 'Oct', year: 2025, type: 'expense' },
+    // November 2025
+    { week: 'WK1', value: 2500, month: 'Nov', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 2700, month: 'Nov', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 2400, month: 'Nov', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 2800, month: 'Nov', year: 2025, type: 'expense' },
+    // December 2025
+    { week: 'WK1', value: 3000, month: 'Dec', year: 2025, type: 'expense' },
+    { week: 'WK2', value: 3500, month: 'Dec', year: 2025, type: 'expense' },
+    { week: 'WK3', value: 3200, month: 'Dec', year: 2025, type: 'expense' },
+    { week: 'WK4', value: 3800, month: 'Dec', year: 2025, type: 'expense' },
+
+    // ===== 2024 DATA (December only) =====
     { week: 'WK1', value: 8200, month: 'Dec', year: 2024, type: 'income' },
     { week: 'WK2', value: 8900, month: 'Dec', year: 2024, type: 'income' },
     { week: 'WK3', value: 9400, month: 'Dec', year: 2024, type: 'income' },
@@ -533,6 +647,7 @@ export const treasureTrackerFilters = {
     years: [2024, 2025],
     types: ['income', 'expense'] as const,
     chartTypes: ['line', 'bar'] as const,
+    timeRanges: ['1 month', '3 months', '6 months', '12 months'] as const,
 };
 
 // ========== FINWIZ CHESTS (MAIN ACCOUNTS VIEW) ==========

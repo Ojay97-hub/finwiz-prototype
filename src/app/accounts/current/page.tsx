@@ -580,8 +580,12 @@ export default function CurrentAccountPage() {
                         ))}
                     </div>
                     {/* Floating wizard icon */}
-                    <div className="absolute -right-2 -top-5 w-12 h-12 bg-[#FFB602] rounded-full flex items-center justify-center shadow-lg z-20 ring-4 ring-white">
-                        <span className="text-2xl">🧙</span>
+                    <div className="absolute -right-2 -top-5 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-20 ring-4 ring-white overflow-hidden">
+                        <img
+                            src="/wizard-logo.png"
+                            alt="FinWiz"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                 </div>
             </section>

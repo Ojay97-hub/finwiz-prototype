@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import CustomDropdown from '@/components/ui/CustomDropdown';
 import {
     totalCoins,
     finWizChests,
@@ -363,6 +364,14 @@ export default function AccountsPage() {
         if (achievementFilter === 'savings') return a.category === 'savings';
         if (achievementFilter === 'budgeting') return a.category === 'budgeting';
         return true;
+    }).sort((a, b) => {
+        // Sort completed achievements first, then by progress descending
+        const aCompleted = a.progress === 100;
+        const bCompleted = b.progress === 100;
+        if (aCompleted && !bCompleted) return -1;
+        if (!aCompleted && bCompleted) return 1;
+        // Within same completion status, sort by progress (higher first for incomplete)
+        return b.progress - a.progress;
     });
 
     // Theme colors for chests
@@ -680,10 +689,10 @@ export default function AccountsPage() {
             < section className="mb-10" >
                 <h2 className="text-xl font-bold text-[#120048] mb-6">Treasure tracker</h2>
 
-                <div className="grid lg:grid-cols-[300px_1fr] gap-0 rounded-[20px] overflow-hidden">
+                <div className="grid lg:grid-cols-[300px_1fr] gap-0 rounded-[20px]">
                     {/* Filter Panel */}
                     <div
-                        className="bg-white p-6 flex flex-col relative z-10 border-2 border-[#2F04B0] rounded-l-[20px]"
+                        className="bg-white p-6 flex flex-col relative z-10 border-2 border-[#2F04B0] rounded-t-[20px] lg:rounded-tr-none lg:rounded-l-[20px]"
                         style={{ boxShadow: '8px 0 20px -5px rgba(18, 0, 72, 0.3)' }}
                     >
                         {/* Summary Card at Top */}
@@ -716,42 +725,26 @@ export default function AccountsPage() {
                                     📅 Time Period
                                 </label>
                                 <div className="grid grid-cols-2 gap-3 mb-3">
-                                    <div>
-                                        <span className="text-xs text-gray-400 mb-1 block">Month</span>
-                                        <select
-                                            value={trackerFilters.month}
-                                            onChange={(e) => setTrackerFilters(prev => ({ ...prev, month: e.target.value }))}
-                                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                                        >
-                                            {treasureTrackerFilters.months.map((month) => (
-                                                <option key={month} value={month}>{month}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <span className="text-xs text-gray-400 mb-1 block">Year</span>
-                                        <select
-                                            value={trackerFilters.year}
-                                            onChange={(e) => setTrackerFilters(prev => ({ ...prev, year: parseInt(e.target.value) }))}
-                                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                                        >
-                                            {treasureTrackerFilters.years.map((year) => (
-                                                <option key={year} value={year}>{year}</option>
-                                            ))}
-                                        </select>
-                                    </div>
+                                    <CustomDropdown
+                                        label="Month"
+                                        value={trackerFilters.month}
+                                        options={treasureTrackerFilters.months}
+                                        onChange={(val) => setTrackerFilters(prev => ({ ...prev, month: val }))}
+                                    />
+                                    <CustomDropdown
+                                        label="Year"
+                                        value={trackerFilters.year}
+                                        options={treasureTrackerFilters.years}
+                                        onChange={(val) => setTrackerFilters(prev => ({ ...prev, year: val }))}
+                                    />
                                 </div>
-                                <div>
-                                    <span className="text-xs text-gray-400 mb-1 block">Range</span>
-                                    <select
+                                <div className="mb-4">
+                                    <CustomDropdown
+                                        label="Range"
                                         value={trackerFilters.timeRange}
-                                        onChange={(e) => setTrackerFilters(prev => ({ ...prev, timeRange: e.target.value as any }))}
-                                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                                    >
-                                        {treasureTrackerFilters.timeRanges.map((range) => (
-                                            <option key={range} value={range}>{range}</option>
-                                        ))}
-                                    </select>
+                                        options={treasureTrackerFilters.timeRanges}
+                                        onChange={(val) => setTrackerFilters(prev => ({ ...prev, timeRange: val }))}
+                                    />
                                 </div>
                             </div>
 
@@ -811,7 +804,7 @@ export default function AccountsPage() {
                     </div>
 
                     {/* Chart Area */}
-                    <div className="bg-[#120048] p-6 flex flex-col">
+                    <div className="bg-[#120048] p-6 flex flex-col rounded-b-[20px] lg:rounded-bl-none lg:rounded-r-[20px]">
                         <h3 className="text-white font-bold text-lg mb-2">
                             {trackerFilters.type.charAt(0).toUpperCase() + trackerFilters.type.slice(1)} – {trackerFilters.month} {trackerFilters.year}
                         </h3>

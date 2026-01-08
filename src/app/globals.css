@@ -247,3 +247,22 @@ body {
   scrollbar-width: none;
 }
 
+/* ========== SUBTLE SCROLLBAR FOR SPENDING TABLE ========== */
+.subtle-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.subtle-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.subtle-scroll::-webkit-scrollbar-thumb {
+  background: rgba(47, 4, 176, 0.15);
+  border-radius: 4px;
+}
+
+.subtle-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(47, 4, 176, 0.3);
+}
+
+

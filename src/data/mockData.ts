@@ -670,3 +670,180 @@ export const finWizChests: FinWizChest[] = [
 // ========== TOTAL COINS ==========
 export const totalCoins = 12230.00;
 
+// ========== WIZARD SPENDING LOCATOR DATA ==========
+export interface SpendingLocation {
+    id: string;
+    merchantName: string;
+    category: 'Food & Drink' | 'Groceries' | 'Transport' | 'Shopping' | 'Entertainment' | 'Bills' | 'Other';
+    areaName: string;
+    amount: number;
+    date: Date;
+    lat: number;
+    lng: number;
+    icon: 'burger' | 'coffee' | 'beer' | 'shopping-bag' | 'train' | 'film' | 'receipt' | 'shopping-cart';
+}
+
+// Generate dates for different time periods
+const now = new Date();
+const daysAgo = (days: number) => new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+
+export const spendingLocations: SpendingLocation[] = [
+    // ===== FOOD & DRINK =====
+    // Within 7 days
+    { id: 'fd1', merchantName: 'Pret A Manger', category: 'Food & Drink', areaName: 'Covent Garden', amount: 8.50, date: daysAgo(1), lat: 51.5117, lng: -0.1229, icon: 'coffee' },
+    { id: 'fd2', merchantName: 'Pret A Manger', category: 'Food & Drink', areaName: 'Covent Garden', amount: 12.20, date: daysAgo(2), lat: 51.5117, lng: -0.1229, icon: 'coffee' },
+    { id: 'fd3', merchantName: 'Costa Coffee', category: 'Food & Drink', areaName: 'Oxford Street', amount: 4.85, date: daysAgo(3), lat: 51.5152, lng: -0.1418, icon: 'coffee' },
+    { id: 'fd4', merchantName: 'Starbucks', category: 'Food & Drink', areaName: 'Tottenham Court Rd', amount: 5.40, date: daysAgo(4), lat: 51.5163, lng: -0.1310, icon: 'coffee' },
+    { id: 'fd5', merchantName: 'Wagamama', category: 'Food & Drink', areaName: 'Soho', amount: 28.50, date: daysAgo(5), lat: 51.5137, lng: -0.1316, icon: 'burger' },
+    { id: 'fd6', merchantName: "Nando's", category: 'Food & Drink', areaName: 'Leicester Square', amount: 32.00, date: daysAgo(6), lat: 51.5107, lng: -0.1304, icon: 'burger' },
+    // Within 30 days
+    { id: 'fd7', merchantName: 'BrewDog', category: 'Food & Drink', areaName: 'Charing Cross', amount: 45.00, date: daysAgo(10), lat: 51.5074, lng: -0.1240, icon: 'beer' },
+    { id: 'fd8', merchantName: 'BrewDog', category: 'Food & Drink', areaName: 'Charing Cross', amount: 38.50, date: daysAgo(15), lat: 51.5074, lng: -0.1240, icon: 'beer' },
+    { id: 'fd9', merchantName: 'Pret A Manger', category: 'Food & Drink', areaName: 'Covent Garden', amount: 9.80, date: daysAgo(12), lat: 51.5117, lng: -0.1229, icon: 'coffee' },
+    { id: 'fd10', merchantName: 'Pret A Manger', category: 'Food & Drink', areaName: 'Covent Garden', amount: 11.20, date: daysAgo(18), lat: 51.5117, lng: -0.1229, icon: 'coffee' },
+    { id: 'fd11', merchantName: 'Wagamama', category: 'Food & Drink', areaName: 'Soho', amount: 24.00, date: daysAgo(20), lat: 51.5137, lng: -0.1316, icon: 'burger' },
+    { id: 'fd12', merchantName: 'Wagamama', category: 'Food & Drink', areaName: 'Soho', amount: 31.50, date: daysAgo(25), lat: 51.5137, lng: -0.1316, icon: 'burger' },
+    { id: 'fd13', merchantName: 'Pizza Express', category: 'Food & Drink', areaName: 'Holborn', amount: 42.00, date: daysAgo(22), lat: 51.5174, lng: -0.1196, icon: 'burger' },
+    // Within 90 days
+    { id: 'fd14', merchantName: 'The Ivy', category: 'Food & Drink', areaName: 'West End', amount: 125.00, date: daysAgo(45), lat: 51.5115, lng: -0.1284, icon: 'burger' },
+    { id: 'fd15', merchantName: 'Dishoom', category: 'Food & Drink', areaName: 'Kings Cross', amount: 68.00, date: daysAgo(50), lat: 51.5348, lng: -0.1247, icon: 'burger' },
+    { id: 'fd16', merchantName: 'Pret A Manger', category: 'Food & Drink', areaName: 'Covent Garden', amount: 8.90, date: daysAgo(55), lat: 51.5117, lng: -0.1229, icon: 'coffee' },
+    { id: 'fd17', merchantName: 'Honest Burgers', category: 'Food & Drink', areaName: 'Brixton', amount: 18.50, date: daysAgo(60), lat: 51.4613, lng: -0.1156, icon: 'burger' },
+    { id: 'fd18', merchantName: 'The Breakfast Club', category: 'Food & Drink', areaName: 'Shoreditch', amount: 22.00, date: daysAgo(75), lat: 51.5263, lng: -0.0811, icon: 'coffee' },
+
+    // ===== GROCERIES =====
+    { id: 'gr1', merchantName: 'M&S Foodhall', category: 'Groceries', areaName: 'Strand', amount: 45.80, date: daysAgo(2), lat: 51.5100, lng: -0.1180, icon: 'shopping-cart' },
+    { id: 'gr2', merchantName: 'Tesco Express', category: 'Groceries', areaName: 'Victoria', amount: 23.50, date: daysAgo(4), lat: 51.4966, lng: -0.1417, icon: 'shopping-cart' },
+    { id: 'gr3', merchantName: 'Sainsburys Local', category: 'Groceries', areaName: 'Waterloo', amount: 31.20, date: daysAgo(6), lat: 51.5032, lng: -0.1132, icon: 'shopping-cart' },
+    { id: 'gr4', merchantName: 'Waitrose', category: 'Groceries', areaName: 'Marylebone', amount: 89.50, date: daysAgo(10), lat: 51.5224, lng: -0.1551, icon: 'shopping-cart' },
+    { id: 'gr5', merchantName: 'M&S Foodhall', category: 'Groceries', areaName: 'Strand', amount: 38.90, date: daysAgo(14), lat: 51.5100, lng: -0.1180, icon: 'shopping-cart' },
+    { id: 'gr6', merchantName: 'Aldi', category: 'Groceries', areaName: 'Islington', amount: 52.30, date: daysAgo(18), lat: 51.5382, lng: -0.1033, icon: 'shopping-cart' },
+    { id: 'gr7', merchantName: 'Lidl', category: 'Groceries', areaName: 'Camden', amount: 41.20, date: daysAgo(25), lat: 51.5390, lng: -0.1426, icon: 'shopping-cart' },
+    { id: 'gr8', merchantName: 'Whole Foods', category: 'Groceries', areaName: 'Kensington', amount: 112.00, date: daysAgo(35), lat: 51.4993, lng: -0.1931, icon: 'shopping-cart' },
+    { id: 'gr9', merchantName: 'Ocado Delivery', category: 'Groceries', areaName: 'Home', amount: 156.50, date: daysAgo(50), lat: 51.5200, lng: -0.0900, icon: 'shopping-cart' },
+    { id: 'gr10', merchantName: 'Tesco Express', category: 'Groceries', areaName: 'Canary Wharf', amount: 28.90, date: daysAgo(70), lat: 51.5054, lng: -0.0235, icon: 'shopping-cart' },
+
+    // ===== TRANSPORT =====
+    { id: 'tr1', merchantName: 'TfL Oyster', category: 'Transport', areaName: 'Multiple Zones', amount: 45.00, date: daysAgo(1), lat: 51.5074, lng: -0.1278, icon: 'train' },
+    { id: 'tr2', merchantName: 'Uber', category: 'Transport', areaName: 'Soho to Shoreditch', amount: 18.50, date: daysAgo(3), lat: 51.5137, lng: -0.1316, icon: 'train' },
+    { id: 'tr3', merchantName: 'Bolt', category: 'Transport', areaName: 'Brixton to Central', amount: 14.20, date: daysAgo(5), lat: 51.4613, lng: -0.1156, icon: 'train' },
+    { id: 'tr4', merchantName: 'TfL Oyster', category: 'Transport', areaName: 'Zone 1-2', amount: 35.60, date: daysAgo(8), lat: 51.5074, lng: -0.1278, icon: 'train' },
+    { id: 'tr5', merchantName: 'Trainline', category: 'Transport', areaName: 'London to Brighton', amount: 28.50, date: daysAgo(14), lat: 51.5031, lng: -0.1132, icon: 'train' },
+    { id: 'tr6', merchantName: 'Lime Bike', category: 'Transport', areaName: 'South Bank', amount: 3.50, date: daysAgo(18), lat: 51.5033, lng: -0.1195, icon: 'train' },
+    { id: 'tr7', merchantName: 'Uber', category: 'Transport', areaName: 'Liverpool St to City', amount: 12.80, date: daysAgo(28), lat: 51.5175, lng: -0.0823, icon: 'train' },
+    { id: 'tr8', merchantName: 'Santander Cycles', category: 'Transport', areaName: 'Hyde Park', amount: 2.00, date: daysAgo(40), lat: 51.5073, lng: -0.1657, icon: 'train' },
+    { id: 'tr9', merchantName: 'National Rail', category: 'Transport', areaName: 'London to Cambridge', amount: 42.00, date: daysAgo(60), lat: 51.5320, lng: -0.1249, icon: 'train' },
+
+    // ===== SHOPPING =====
+    { id: 'sh1', merchantName: 'Zara', category: 'Shopping', areaName: 'Oxford Street', amount: 89.00, date: daysAgo(2), lat: 51.5152, lng: -0.1418, icon: 'shopping-bag' },
+    { id: 'sh2', merchantName: 'H&M', category: 'Shopping', areaName: 'Regent Street', amount: 54.99, date: daysAgo(5), lat: 51.5117, lng: -0.1401, icon: 'shopping-bag' },
+    { id: 'sh3', merchantName: 'Apple Store', category: 'Shopping', areaName: 'Covent Garden', amount: 149.00, date: daysAgo(8), lat: 51.5117, lng: -0.1229, icon: 'shopping-bag' },
+    { id: 'sh4', merchantName: 'John Lewis', category: 'Shopping', areaName: 'Oxford Street', amount: 245.00, date: daysAgo(12), lat: 51.5152, lng: -0.1418, icon: 'shopping-bag' },
+    { id: 'sh5', merchantName: 'Selfridges', category: 'Shopping', areaName: 'Oxford Street', amount: 320.00, date: daysAgo(20), lat: 51.5152, lng: -0.1519, icon: 'shopping-bag' },
+    { id: 'sh6', merchantName: 'Nike Town', category: 'Shopping', areaName: 'Oxford Street', amount: 110.00, date: daysAgo(28), lat: 51.5152, lng: -0.1418, icon: 'shopping-bag' },
+    { id: 'sh7', merchantName: 'ASOS Order', category: 'Shopping', areaName: 'Online', amount: 62.00, date: daysAgo(35), lat: 51.5200, lng: -0.0900, icon: 'shopping-bag' },
+    { id: 'sh8', merchantName: 'Amazon', category: 'Shopping', areaName: 'Online', amount: 156.99, date: daysAgo(45), lat: 51.5200, lng: -0.0900, icon: 'shopping-bag' },
+    { id: 'sh9', merchantName: 'Westfield', category: 'Shopping', areaName: 'Stratford', amount: 215.50, date: daysAgo(70), lat: 51.5433, lng: -0.0083, icon: 'shopping-bag' },
+    { id: 'sh10', merchantName: 'Harrods', category: 'Shopping', areaName: 'Knightsbridge', amount: 450.00, date: daysAgo(85), lat: 51.4994, lng: -0.1633, icon: 'shopping-bag' },
+
+    // ===== ENTERTAINMENT =====
+    { id: 'en1', merchantName: 'Odeon Cinema', category: 'Entertainment', areaName: 'Leicester Square', amount: 24.00, date: daysAgo(3), lat: 51.5107, lng: -0.1304, icon: 'film' },
+    { id: 'en2', merchantName: 'Vue Cinema', category: 'Entertainment', areaName: 'Westfield', amount: 18.50, date: daysAgo(10), lat: 51.5074, lng: -0.2212, icon: 'film' },
+    { id: 'en3', merchantName: 'National Theatre', category: 'Entertainment', areaName: 'South Bank', amount: 65.00, date: daysAgo(15), lat: 51.5073, lng: -0.1138, icon: 'film' },
+    { id: 'en4', merchantName: 'O2 Arena', category: 'Entertainment', areaName: 'Greenwich', amount: 85.00, date: daysAgo(22), lat: 51.5033, lng: 0.0032, icon: 'film' },
+    { id: 'en5', merchantName: 'Spotify Premium', category: 'Entertainment', areaName: 'Online', amount: 10.99, date: daysAgo(1), lat: 51.5200, lng: -0.0900, icon: 'film' },
+    { id: 'en6', merchantName: 'Netflix', category: 'Entertainment', areaName: 'Online', amount: 15.99, date: daysAgo(8), lat: 51.5200, lng: -0.0900, icon: 'film' },
+    { id: 'en7', merchantName: 'West End Show', category: 'Entertainment', areaName: 'Piccadilly', amount: 120.00, date: daysAgo(40), lat: 51.5099, lng: -0.1337, icon: 'film' },
+    { id: 'en8', merchantName: 'Comedy Store', category: 'Entertainment', areaName: 'Leicester Square', amount: 28.00, date: daysAgo(55), lat: 51.5107, lng: -0.1304, icon: 'film' },
+
+    // ===== BILLS =====
+    { id: 'bi1', merchantName: 'British Gas', category: 'Bills', areaName: 'Home', amount: 89.00, date: daysAgo(5), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi2', merchantName: 'Thames Water', category: 'Bills', areaName: 'Home', amount: 32.50, date: daysAgo(10), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi3', merchantName: 'Council Tax', category: 'Bills', areaName: 'Home', amount: 145.00, date: daysAgo(15), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi4', merchantName: 'Sky Broadband', category: 'Bills', areaName: 'Home', amount: 45.00, date: daysAgo(18), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi5', merchantName: 'EE Mobile', category: 'Bills', areaName: 'Home', amount: 35.00, date: daysAgo(20), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi6', merchantName: 'Insurance', category: 'Bills', areaName: 'Home', amount: 85.00, date: daysAgo(30), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi7', merchantName: 'Rent', category: 'Bills', areaName: 'Home', amount: 1200.00, date: daysAgo(2), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi8', merchantName: 'Rent', category: 'Bills', areaName: 'Home', amount: 1200.00, date: daysAgo(32), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+    { id: 'bi9', merchantName: 'Electricity', category: 'Bills', areaName: 'Home', amount: 68.00, date: daysAgo(45), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+
+    // ===== OTHER =====
+    { id: 'ot1', merchantName: 'PureGym', category: 'Other', areaName: 'Bank', amount: 24.99, date: daysAgo(1), lat: 51.5135, lng: -0.0887, icon: 'receipt' },
+    { id: 'ot2', merchantName: 'Boots Pharmacy', category: 'Other', areaName: 'Victoria', amount: 18.50, date: daysAgo(7), lat: 51.4966, lng: -0.1417, icon: 'receipt' },
+    { id: 'ot3', merchantName: 'Specsavers', category: 'Other', areaName: 'Holborn', amount: 125.00, date: daysAgo(20), lat: 51.5174, lng: -0.1196, icon: 'receipt' },
+    { id: 'ot4', merchantName: 'Haircut', category: 'Other', areaName: 'Shoreditch', amount: 45.00, date: daysAgo(14), lat: 51.5263, lng: -0.0811, icon: 'receipt' },
+    { id: 'ot5', merchantName: 'Dry Cleaning', category: 'Other', areaName: 'Clerkenwell', amount: 28.00, date: daysAgo(25), lat: 51.5226, lng: -0.1021, icon: 'receipt' },
+    { id: 'ot6', merchantName: 'Car Wash', category: 'Other', areaName: 'Mile End', amount: 15.00, date: daysAgo(40), lat: 51.5253, lng: -0.0339, icon: 'receipt' },
+    { id: 'ot7', merchantName: 'Dentist', category: 'Other', areaName: 'Harley Street', amount: 180.00, date: daysAgo(60), lat: 51.5192, lng: -0.1478, icon: 'receipt' },
+    { id: 'ot8', merchantName: 'Charity Donation', category: 'Other', areaName: 'Online', amount: 25.00, date: daysAgo(80), lat: 51.5200, lng: -0.0900, icon: 'receipt' },
+];
+
+// Category metadata for the spending locator
+export const spendingLocatorCategories = [
+    { id: 'food-drink', name: 'Food & Drink', icon: 'burger', color: '#FF6B35' },
+    { id: 'groceries', name: 'Groceries', icon: 'shopping-cart', color: '#00A326' },
+    { id: 'transport', name: 'Transport', icon: 'train', color: '#3008A3' },
+    { id: 'shopping', name: 'Shopping', icon: 'shopping-bag', color: '#8F6AFB' },
+    { id: 'entertainment', name: 'Entertainment', icon: 'film', color: '#E50913' },
+    { id: 'bills', name: 'Bills', icon: 'receipt', color: '#7167BF' },
+    { id: 'other', name: 'Other', icon: 'receipt', color: '#BDC2CA' },
+];
+
+// Time period options
+export const timePeriodOptions = [
+    { id: '7days', label: 'Last 7 days', days: 7 },
+    { id: '30days', label: 'Last 30 days', days: 30 },
+    { id: '90days', label: 'Last 90 days', days: 90 },
+    { id: 'all', label: 'All time', days: 365 },
+];
+
+// AI Insights templates based on spending patterns
+export interface SpendingInsight {
+    category: string;
+    insight: string;
+    tip: string;
+}
+
+export const spendingInsightsTemplates: Record<string, SpendingInsight> = {
+    'Food & Drink': {
+        category: 'Food & Drink',
+        insight: "Looks like you're spending quite a bit on lunch in {topArea}!",
+        tip: "Try packing a homemade lunch a few times a week or exploring more affordable options nearby to cut down your food costs significantly."
+    },
+    'Groceries': {
+        category: 'Groceries',
+        insight: "Your grocery spending is concentrated at {topMerchant}.",
+        tip: "Consider comparing prices at discount stores like Aldi or Lidl - you could save up to 30% on your weekly shop!"
+    },
+    'Transport': {
+        category: 'Transport',
+        insight: "Transport costs are adding up with frequent {topMerchant} usage.",
+        tip: "A weekly or monthly travel card might save you money if you're commuting regularly. Also consider cycling for shorter journeys!"
+    },
+    'Shopping': {
+        category: 'Shopping',
+        insight: "You've been treating yourself at {topArea} recently!",
+        tip: "Try the 24-hour rule - wait a day before making non-essential purchases to avoid impulse buying."
+    },
+    'Entertainment': {
+        category: 'Entertainment',
+        insight: "Enjoying the entertainment scene around {topArea}!",
+        tip: "Look for discount days at cinemas and check for 2-for-1 deals on theatre tickets through apps like TodayTix."
+    },
+    'Bills': {
+        category: 'Bills',
+        insight: "Your regular bills are well organized.",
+        tip: "Consider switching providers for utilities - comparison sites can help you save hundreds each year on energy and broadband."
+    },
+    'Other': {
+        category: 'Other',
+        insight: "Miscellaneous spending across various services.",
+        tip: "Review these transactions periodically to ensure they're all necessary - small recurring costs can add up over time!"
+    },
+    'all': {
+        category: 'Overall',
+        insight: "Your spending is spread across multiple categories with {topCategory} being the highest.",
+        tip: "Focus on reducing costs in your top spending categories first - even a 10% reduction can make a big difference!"
+    }
+};
+

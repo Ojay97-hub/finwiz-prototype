@@ -3,6 +3,7 @@ import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import MobileNav from "@/components/layout/MobileNav";
 
 export const metadata: Metadata = {
   title: "FinWiz - Your Magical Money Companion",
@@ -24,6 +25,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <MobileNav />
         </div>
       </body>
     </html>

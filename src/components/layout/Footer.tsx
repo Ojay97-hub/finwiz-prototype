@@ -5,7 +5,7 @@ export default function Footer() {
     const currentYear = 2025;
 
     return (
-        <footer className="bg-gradient-to-b from-[#120048] to-[#0a0028] text-white pt-20 pb-8 relative overflow-hidden">
+        <footer className="hidden md:block bg-gradient-to-b from-[#120048] to-[#0a0028] text-white pt-20 pb-8 relative overflow-hidden">
             {/* Subtle background glow effects */}
             <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-[#2F04B0]/20 rounded-full blur-[150px] pointer-events-none"></div>
             <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-[#FFB602]/10 rounded-full blur-[120px] pointer-events-none"></div>

@@ -32,17 +32,18 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-10 pt-3">
-        {/* Pill-shaped container with rounded corners */}
+    <header className="sticky top-0 z-50 bg-surface-base">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pt-3 pb-2 sm:pb-0">
+        {/* Mobile: No container, just flex layout with padding */}
+        {/* Desktop: Pill-shaped container with rounded corners */}
         <div
-          className="flex items-center justify-between h-20 px-10 bg-white border border-gray-200 shadow-sm"
+          className="flex items-center justify-between h-16 sm:h-20 sm:px-4 lg:px-10 sm:bg-white sm:border sm:border-gray-200 sm:shadow-sm"
           style={{ borderRadius: '60px' }}
         >
 
           {/* Logo Section */}
-          <Link href="/accounts" className="flex items-center gap-3">
-            <div className="relative w-10 h-10">
+          <Link href="/accounts" className="flex items-center gap-2 sm:gap-3">
+            <div className="relative w-10 h-10 sm:w-10 sm:h-10">
               <Image
                 src="/wizard-logo.png"
                 alt="FinWiz Logo"
@@ -50,13 +51,13 @@ export default function Header() {
                 className="object-contain"
               />
             </div>
-            <span className="text-2xl font-bold tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold tracking-tight">
               <span className="text-[#2F04B0]">Fin</span>
               <span className="italic text-[#2F04B0]">Wiz</span>
             </span>
           </Link>
 
-          {/* Navigation - Centered */}
+          {/* Navigation - Centered (Desktop only) */}
           <nav className="hidden lg:flex items-center justify-center flex-1">
             <div className="flex items-center gap-8">
               {navItems.map((item) => {
@@ -103,9 +104,9 @@ export default function Header() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             {/* Account */}
-            <button className="flex flex-col items-center gap-1 text-[#120048] hover:text-[#2F04B0] group">
+            <button className="flex flex-col items-center gap-0.5 sm:gap-1 text-[#120048] hover:text-[#2F04B0] group">
               <div className="w-8 h-8 rounded-full overflow-hidden transition-colors relative bg-transparent">
                 <Image
                   src="/user-avatar.png"
@@ -114,11 +115,11 @@ export default function Header() {
                   className="object-cover scale-125"
                 />
               </div>
-              <span className="text-xs font-medium text-[#2F04B0] transition-colors">Account</span>
+              <span className="text-[10px] sm:text-xs font-medium text-[#2F04B0] transition-colors hidden sm:block">Account</span>
             </button>
 
             {/* Chat */}
-            <button className="flex flex-col items-center gap-1 text-[#120048] hover:text-[#2F04B0] group">
+            <button className="flex flex-col items-center gap-0.5 sm:gap-1 text-[#120048] hover:text-[#2F04B0] group">
               <div className="h-8 flex items-center justify-center">
                 <ChatCircle
                   size={24}
@@ -126,7 +127,7 @@ export default function Header() {
                   className="text-[#120048] group-hover:text-[#2F04B0]"
                 />
               </div>
-              <span className="text-xs font-medium text-[#120048] group-hover:text-[#2F04B0] transition-colors">Chat</span>
+              <span className="text-[10px] sm:text-xs font-medium text-[#120048] group-hover:text-[#2F04B0] transition-colors hidden sm:block">Chat</span>
             </button>
           </div>
 

@@ -1,4 +1,4 @@
-'use client';
+                                                                                                                     'use client';
 
 import { useState } from 'react';
 import {
@@ -174,8 +174,30 @@ export default function CurrentAccountPage() {
             <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6 mb-8">
                 {/* Left Column - Current Magic */}
                 <div>
+                    {/* Mobile-only: Account Tabs ABOVE the card - CENTERED */}
+                    <div className="sm:hidden mb-4 flex justify-center">
+                        <div className="bg-white rounded-full p-1 inline-flex shadow-lg">
+                            {[
+                                { label: 'Current account', key: 'current-account' },
+                                { label: 'Savings', key: 'savings' },
+                                { label: 'Credit Card', key: 'credit-card' },
+                            ].map((tab) => (
+                                <button
+                                    key={tab.key}
+                                    onClick={() => setActiveTab(tab.key)}
+                                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === tab.key
+                                        ? `${currentTheme.tabBg} text-white shadow-sm`
+                                        : `${currentTheme.tabText} hover:bg-gray-50`
+                                        }`}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     {/* Current Magic Card */}
-                    <div className={`${currentTheme.bg} rounded-[24px] p-6 lg:p-8 text-white relative overflow-hidden h-[360px] flex flex-col justify-between shadow-xl transition-colors duration-300`}>
+                    <div className={`${currentTheme.bg} rounded-[24px] p-6 lg:p-8 text-white relative overflow-hidden h-auto sm:h-[360px] flex flex-col justify-between shadow-xl transition-colors duration-300`}>
                         {/* Background blobs/gradients */}
                         <div className={`absolute top-0 right-0 w-[400px] h-[400px] ${currentTheme.blob1} rounded-full blur-[100px] opacity-50 -translate-y-1/2 translate-x-1/3 pointer-events-none`}></div>
                         <div className={`absolute bottom-0 left-0 w-[300px] h-[300px] ${currentTheme.blob2} rounded-full blur-[80px] opacity-40 translate-y-1/3 -translate-x-1/3 pointer-events-none`}></div>
@@ -190,14 +212,14 @@ export default function CurrentAccountPage() {
                             </div>
 
                             {/* Center section - balance */}
-                            <div className="flex-1 flex items-center">
+                            <div className="flex-1 flex items-center py-6 sm:py-0">
                                 <h1 className={`text-5xl lg:text-6xl font-bold ${activeTab === 'current-account' ? 'text-white' : 'text-gray-800'}`}>
                                     £{currentBalance.toLocaleString('en-GB', { minimumFractionDigits: 2 })}
                                 </h1>
                             </div>
 
-                            {/* Bottom section - buttons (close to tabs) */}
-                            <div className="flex flex-wrap gap-4 mb-3">
+                            {/* Desktop: Action buttons - horizontal flex wrap */}
+                            <div className="hidden sm:flex flex-wrap gap-4 mb-3">
                                 <button className="flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
                                     <Plus className="w-4 h-4" /> Add Money
                                 </button>
@@ -212,8 +234,24 @@ export default function CurrentAccountPage() {
                                 </button>
                             </div>
 
-                            {/* Account Tabs - Segmented Control style */}
-                            <div className="bg-white rounded-full p-1 inline-flex max-w-fit shadow-lg">
+                            {/* Mobile: Action buttons - 2x2 grid with original styling */}
+                            <div className="sm:hidden grid grid-cols-2 gap-3">
+                                <button className="flex items-center justify-center gap-2 bg-white text-gray-900 px-4 py-3 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <Plus className="w-4 h-4" /> Add Money
+                                </button>
+                                <button className="flex items-center justify-center gap-2 bg-white text-gray-900 px-4 py-3 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <FileText className="w-4 h-4" /> Send Money
+                                </button>
+                                <button className="flex items-center justify-center gap-2 bg-white text-gray-900 px-4 py-3 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <ArrowRightLeft className="w-4 h-4" /> Transfer
+                                </button>
+                                <button className="flex items-center justify-center gap-2 bg-white text-gray-900 px-4 py-3 rounded-[15px] text-sm font-semibold hover:bg-gray-50 transition-all shadow-sm">
+                                    <Split className="w-4 h-4" /> Split
+                                </button>
+                            </div>
+
+                            {/* Account Tabs - Desktop only (hidden on mobile) */}
+                            <div className="hidden sm:inline-flex bg-white rounded-full p-1 max-w-fit shadow-lg">
                                 {[
                                     { label: 'Current account', key: 'current-account' },
                                     { label: 'Savings', key: 'savings' },
@@ -236,33 +274,31 @@ export default function CurrentAccountPage() {
                 </div>
 
                 {/* Right Column - Insights & Tips */}
-                <div className="flex flex-col h-[360px]">
+                <div className={`flex flex-col ${showTips ? 'sm:h-[360px]' : 'h-auto'}`}>
                     {/* Toggle Header */}
                     <div className="flex items-center justify-between mb-4 px-1 shrink-0">
-                        <span className="text-lg font-bold text-[#120048]">FinWiz All Insights</span>
-                        <label className="flex items-center gap-3 cursor-pointer">
+                        <span className="text-base sm:text-lg font-bold text-[#120048]">FinWiz All Insights</span>
+                        <label className="flex items-center gap-2 sm:gap-3 cursor-pointer">
                             <div
                                 className={`w-10 h-6 rounded-full relative transition-colors ${showTips ? 'bg-[#2F04B0]' : 'bg-gray-300'}`}
                                 onClick={() => setShowTips(!showTips)}
                             >
                                 <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${showTips ? 'right-1' : 'left-1'}`} />
                             </div>
-                            <span className="text-sm font-medium text-[#120048]">hide FinWiz tip</span>
+                            <span className="text-xs sm:text-sm font-medium text-[#120048]">
+                                {showTips ? 'hide FinWiz tip' : 'show FinWiz tip'}
+                            </span>
                         </label>
                     </div>
 
-                    {/* Tips Content */}
-                    {showTips ? (
-                        <div className="bg-white border border-gray-100 rounded-[32px] p-8 flex flex-col flex-1 shadow-sm hover:shadow-md transition-shadow min-h-0">
-                            <div className="text-[#120048] text-base leading-relaxed space-y-5 h-full flex flex-col justify-center">
+                    {/* Tips Content - Only render when showTips is true */}
+                    {showTips && (
+                        <div className="bg-white border border-gray-100 rounded-[32px] p-4 sm:p-8 flex flex-col flex-1 shadow-sm hover:shadow-md transition-shadow min-h-0">
+                            <div className="text-[#120048] text-sm sm:text-base leading-relaxed space-y-3 sm:space-y-5 h-full flex flex-col justify-center overflow-y-auto">
                                 {accountData.aiTips.map((tip, index) => (
-                                    <p key={index}>• <strong>"{tip.title}"</strong> = {tip.description}</p>
+                                    <p key={index} className="text-sm sm:text-base">• <strong>"{tip.title}"</strong> = {tip.description}</p>
                                 ))}
                             </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white border border-gray-100 rounded-[32px] p-8 flex items-center justify-center flex-1 shadow-sm min-h-0">
-                            <p className="text-center text-gray-400">Tips are hidden. Toggle above to show.</p>
                         </div>
                     )}
                 </div>
@@ -287,8 +323,10 @@ export default function CurrentAccountPage() {
                          */}
 
 
-                        <div className="flex items-center justify-between mb-8 relative z-10 px-6">
-                            <div className="flex flex-col gap-4">
+                        {/* Filter Section - Stacks vertically on mobile */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-4 mb-8 relative z-10 px-6">
+                            {/* Filter by Category */}
+                            <div className="flex flex-col gap-3">
                                 <h2 className="text-base font-semibold text-text-primary">Filter by Category</h2>
                                 <div className="flex flex-wrap gap-2">
                                     <button
@@ -329,7 +367,8 @@ export default function CurrentAccountPage() {
                                     </button>
                                 </div>
                             </div>
-                            <div className="flex flex-col items-end gap-4">
+                            {/* Time Period - Below category on mobile, right-aligned on desktop */}
+                            <div className="flex flex-col gap-3 sm:items-end">
                                 <h2 className="text-base font-semibold text-text-primary">Time Period</h2>
                                 <div className="relative">
                                     <button
@@ -345,7 +384,7 @@ export default function CurrentAccountPage() {
                                                 className="fixed inset-0 z-40"
                                                 onClick={() => setIsTimeDropdownOpen(false)}
                                             />
-                                            <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 min-w-[160px] z-50 overflow-hidden">
+                                            <div className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 min-w-[160px] z-50 overflow-hidden">
                                                 {timeOptions.map((option) => (
                                                     <button
                                                         key={option}
@@ -370,9 +409,9 @@ export default function CurrentAccountPage() {
 
                         <div className="h-px w-auto mx-6 bg-brand-primary/20 mb-6"></div>
 
-                        {/* Search and Action */}
-                        <div className="flex items-center justify-between gap-4 mb-8 relative z-10 px-6">
-                            <div className="flex-1 relative max-w-md">
+                        {/* Search and Action - Icon next to search on mobile, separate row on desktop */}
+                        <div className="flex items-center gap-3 sm:flex-row sm:justify-between mb-8 relative z-10 px-6">
+                            <div className="flex-1 relative sm:max-w-md">
                                 <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                                 <input
                                     type="text"
@@ -382,13 +421,18 @@ export default function CurrentAccountPage() {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:border-gray-400 transition-colors">
+                            {/* Mobile: Icon only */}
+                            <button className="sm:hidden flex items-center justify-center w-11 h-11 rounded-full border border-gray-300 text-gray-700 hover:border-gray-400 transition-colors shrink-0">
+                                <Download className="w-5 h-5" />
+                            </button>
+                            {/* Desktop: Full button */}
+                            <button className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-300 text-gray-700 text-sm font-medium hover:border-gray-400 transition-colors">
                                 Download Statement <Download className="w-4 h-4" />
                             </button>
                         </div>
 
-                        {/* Transactions Table */}
-                        <div className="relative z-10">
+                        {/* Transactions Table - Desktop view */}
+                        <div className="relative z-10 hidden sm:block">
                             <table className="w-full">
                                 <thead>
                                     <tr className="text-left text-sm text-text-primary">
@@ -412,6 +456,40 @@ export default function CurrentAccountPage() {
                                             <td className="py-4 px-6 align-middle text-right">
                                                 <span className={`font-semibold text-base ${t.amount >= 0 ? 'text-status-success' : 'text-text-primary'}`}>
                                                     {t.amount >= 0 ? '+' : ''} £{Math.abs(t.amount).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Transactions Table - Mobile view (3 columns: Name+Type, Time, Amount) */}
+                        <div className="relative z-10 sm:hidden">
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-left text-sm text-text-primary">
+                                        <th className="pb-4 px-4 font-semibold">Yesterday</th>
+                                        <th className="pb-4 px-2 font-semibold text-center">Time</th>
+                                        <th className="pb-4 px-4 font-semibold text-right">+ £18,550.00</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredTransactions.slice(0, 10).map((t, index) => (
+                                        <tr key={t.id} className="group hover:bg-surface-base/50 transition-colors">
+                                            <td className="py-3 px-4 align-middle">
+                                                <div className="flex items-center gap-2.5">
+                                                    <TransactionIcon transaction={t} className="w-9 h-9 shrink-0" />
+                                                    <div className="flex flex-col min-w-0">
+                                                        <span className="font-semibold text-text-primary text-sm truncate">{t.merchant}</span>
+                                                        <span className="text-xs text-text-secondary font-medium">{t.category}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="py-3 px-2 text-xs text-text-primary font-medium align-middle text-center whitespace-nowrap">00:15am</td>
+                                            <td className="py-3 px-4 align-middle text-right">
+                                                <span className={`font-semibold text-sm ${t.amount >= 0 ? 'text-status-success' : 'text-text-primary'}`}>
+                                                    {t.amount >= 0 ? '+' : ''}£{Math.abs(t.amount).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
                                                 </span>
                                             </td>
                                         </tr>
@@ -569,10 +647,10 @@ export default function CurrentAccountPage() {
             </div>
 
             {/* FinWiz Transactions Summary */}
-            <section className="mb-0 mt-[46px]">
+            <section className="mb-24 sm:mb-0 mt-[46px]">
                 <h2 className="text-lg font-semibold text-text-primary mb-4">FinWiz Transactions Summary</h2>
                 <div className="relative">
-                    <div className="w-full bg-gradient-to-r from-[#7159B6] via-[#F2645D] to-[#FFB602] rounded-[20px] px-8 py-4 flex gap-6 overflow-x-auto items-stretch min-h-[80px] justify-center no-scrollbar">
+                    <div className="w-full bg-gradient-to-r from-[#7159B6] via-[#F2645D] to-[#FFB602] rounded-[20px] px-4 sm:px-8 py-4 flex gap-4 sm:gap-6 overflow-x-auto items-stretch min-h-[80px] justify-start no-scrollbar">
                         {summaryPills.map((pill, i) => (
                             <div key={i} className="bg-white px-6 py-4 rounded-[12px] text-[#120048] text-sm font-semibold whitespace-nowrap shadow-sm w-[274px] min-w-[274px] shrink-0 flex items-center justify-center">
                                 {pill.text}

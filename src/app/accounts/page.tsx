@@ -432,7 +432,7 @@ export default function AccountsPage() {
     };
 
     return (
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-6 lg:py-10">
+        <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-6 lg:py-10 pb-28 sm:pb-10">
             {/* ===== SECTION 1: Total Coins & AI Insights ===== */}
             {/* ===== SECTION 1: Total Coins & AI Insights ===== */}
             <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 mb-10">
